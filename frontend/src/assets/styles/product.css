@@ -1,0 +1,23 @@
+.product-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.product-tile {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ccc;
+  padding: 1rem;
+}
+
+.product-image {
+  width: 100%;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+.product-name {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}

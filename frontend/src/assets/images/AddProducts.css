@@ -1,0 +1,59 @@
+/* Style the container */
+.container {
+    margin-top: 50px;
+  }
+  
+  /* Style the form */
+  form {
+    background-color: #fff;
+    border: 1px solid #e4e4e4;
+    border-radius: 5px;
+    padding: 30px;
+  }
+  
+  /* Style the form labels */
+  label {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  /* Style the form inputs */
+  input {
+    border: 1px solid #e4e4e4;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+  
+  /* Style the form submit button */
+  button[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    margin-top: 20px;
+  }
+  
+  /* Style the form submit button on hover */
+  button[type="submit"]:hover {
+    background-color: #0069d9;
+    cursor: pointer;
+  }
+  
+  /* Style the form error message */
+  .error {
+    color: #dc3545;
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    text-align: center;
+    padding: 40px;
+    
+    
+  }
+  
