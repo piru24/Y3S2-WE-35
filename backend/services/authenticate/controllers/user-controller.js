@@ -177,31 +177,23 @@ const getUsers = async (req, res, next) => {
 
 //logout function
 const logout = (req, res, next) => {
-  const userid = req.userId;//request user Id from the token
-  const cookies = req.headers.cookie;//request cookie from the header
+  const token = req.cookies.token; // Use cookie-parser to access token
 
-  //exttracting token from the cookies
-  const prevToken = cookies.split("=")[1];
-
-  //if token is not found return this response
-  if (!prevToken) {
+  if (!token) {
     return res.status(400).json({ message: "Couldn't find token" });
   }
 
-  //varifying token using secret key from the environmental variables
-  jwt.verify(String(prevToken), process.env.SECRET, (err, user) => {
+  jwt.verify(token, process.env.SECRET, (err, user) => {
     if (err) {
       console.log(err);
-      return res.status(403).json({ message: "Authentication failed" });//if not verified return this error
+      return res.status(403).json({ message: "Authentication failed" });
     }
 
-  
-    //if token is varified return this success message as response
     res.clearCookie("token");
-    req.cookies["token"] = "";
     return res.status(200).json({ message: "Successfully Logged Out" });
   });
 };
+
 
 //delete Acc
 
