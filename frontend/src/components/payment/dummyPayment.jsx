@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import swal from "sweetalert2";
 import axios from "axios";
+import { FaCreditCard, FaUser, FaEnvelope, FaMobileAlt, FaLock } from "react-icons/fa";
 
 export default function AddPayment() {
   const cart = useSelector((state) => state.cart);
@@ -35,15 +36,18 @@ export default function AddPayment() {
   const AddPayment = async (e) => {
     e.preventDefault();
     try {
-      // 1. Make dummy payment
       const paymentRes = await axios.post(
         "http://localhost:8500/payment/card",
         newPayment,
         { withCredentials: true }
       );
-      swal.fire(`Payment Successful`);
+      swal.fire({
+        title: 'Payment Successful!',
+        icon: 'success',
+        background: '#f0fdf4',
+        confirmButtonColor: '#16a34a'
+      });
 
-      // 2. Now create the order (just like Stripe flow)
       const orderData = {
         products: cart.products.map((product) => ({
           productId: product._id,
@@ -59,153 +63,129 @@ export default function AddPayment() {
         { withCredentials: true }
       );
 
-      // 3. Navigate to order history or show success
       navigate("/getOrders");
     } catch (error) {
       console.error(error);
-      swal.fire(`Payment or Order Failed`);
+      swal.fire({
+        title: 'Payment Failed',
+        text: 'Please check your details and try again',
+        icon: 'error',
+        background: '#fef2f2',
+        confirmButtonColor: '#dc2626'
+      });
     }
   };
 
   const navigate = useNavigate();
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-lg">
-        <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">
-          Payment
-        </h1>
+    <div className="bg-gradient-to-br from-green-200 via-yellow-100 to-green-300 p-8 flex items-center justify-center">
+      <div className="bg-white/90 backdrop-blur-lg shadow-2xl rounded-2xl p-8 w-full max-w-lg border border-green-100">
+        <div className="flex items-center justify-center gap-3 mb-8">
+          <FaCreditCard className="text-3xl text-green-600" />
+          <h1 className="text-3xl font-bold text-center text-green-800">
+            Secure Payment
+          </h1>
+        </div>
+        
         <form onSubmit={AddPayment} className="space-y-6">
           {/* Email and Mobile */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-gray-700 font-medium mb-2"
-              >
-                Email
-              </label>
+            <div className="relative">
+              <FaEnvelope className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-500" />
               <input
                 name="email"
                 type="email"
                 placeholder="Email"
                 required
                 onChange={(val) => handleChangeText("email", val)}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full pl-10 pr-4 py-3 border-2 border-green-100 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 bg-green-50"
               />
             </div>
-            <div>
-              <label
-                htmlFor="mobile"
-                className="block text-gray-700 font-medium mb-2"
-              >
-                Mobile
-              </label>
+            <div className="relative">
+              <FaMobileAlt className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-500" />
               <input
                 name="mobile"
                 type="number"
                 placeholder="Mobile"
                 required
                 onChange={(val) => handleChangeText("mobile", val)}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full pl-10 pr-4 py-3 border-2 border-green-100 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 bg-green-50"
               />
             </div>
           </div>
 
           {/* Credit Card Details */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label
-                htmlFor="number"
-                className="block text-gray-700 font-medium mb-2"
-              >
-                Credit Card Number
-              </label>
+          <div className="space-y-4">
+            <div className="relative">
+              <FaCreditCard className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-500" />
               <input
                 name="number"
                 type="text"
-                placeholder="xxxx xxxx xxxx xxxx"
+                placeholder="Card Number"
                 required
                 onChange={(val) => handleChangeText("number", val)}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full pl-10 pr-4 py-3 border-2 border-green-100 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 bg-green-50"
               />
             </div>
-            <div>
-              <label
-                htmlFor="expiration"
-                className="block text-gray-700 font-medium mb-2"
-              >
-                Expiration Date
-              </label>
-              <input
-                name="expiration"
-                type="text"
-                placeholder="MM/YY"
-                required
-                onChange={(val) => handleChangeText("expiration", val)}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+            
+            <div className="grid grid-cols-2 gap-4">
+              <div className="relative">
+                <input
+                  name="expiration"
+                  type="text"
+                  placeholder="MM/YY"
+                  required
+                  onChange={(val) => handleChangeText("expiration", val)}
+                  className="w-full px-4 py-3 border-2 border-green-100 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 bg-green-50"
+                />
+              </div>
+              <div className="relative">
+                <FaLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-500" />
+                <input
+                  name="cvv"
+                  type="number"
+                  placeholder="CVV"
+                  required
+                  onChange={(val) => handleChangeText("cvv", val)}
+                  className="w-full pl-10 pr-4 py-3 border-2 border-green-100 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 bg-green-50"
+                />
+              </div>
             </div>
           </div>
 
+          {/* Name and Amount */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label
-                htmlFor="cvv"
-                className="block text-gray-700 font-medium mb-2"
-              >
-                CVV
-              </label>
-              <input
-                name="cvv"
-                type="number"
-                placeholder="CVV"
-                required
-                onChange={(val) => handleChangeText("cvv", val)}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="name"
-                className="block text-gray-700 font-medium mb-2"
-              >
-                Name on Card
-              </label>
+            <div className="relative">
+              <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-500" />
               <input
                 name="name"
                 type="text"
-                placeholder="Name"
+                placeholder="Cardholder Name"
                 required
                 onChange={(val) => handleChangeText("name", val)}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full pl-10 pr-4 py-3 border-2 border-green-100 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 bg-green-50"
               />
             </div>
-          </div>
-
-          {/* Amount */}
-          <div>
-            <label
-              htmlFor="amount"
-              className="block text-gray-700 font-medium mb-2"
-            >
-              Amount (Rs.)
-            </label>
-            <input
-              name="amount"
-              type="number"
-              placeholder="Amount"
-              required
-              onChange={(val) => handleChangeText("amount", val)}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-500 font-bold">₹</span>
+              <input
+                name="amount"
+                type="number"
+                placeholder="Amount"
+                required
+                onChange={(val) => handleChangeText("amount", val)}
+                className="w-full pl-10 pr-4 py-3 border-2 border-green-100 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 bg-green-50"
+              />
+            </div>
           </div>
 
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200"
+            className="w-full bg-gradient-to-r from-green-600 to-green-700 text-white py-4 px-6 rounded-xl font-bold shadow-lg hover:shadow-xl hover:from-green-700 hover:to-green-800 transition-all duration-300 flex items-center justify-center gap-2"
           >
-            Submit Payment
+            <FaCreditCard className="text-xl" />
+            Confirm Payment
           </button>
         </form>
       </div>

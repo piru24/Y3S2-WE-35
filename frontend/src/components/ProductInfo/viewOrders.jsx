@@ -4,15 +4,21 @@ import axios from "axios";
 const ViewOrders = () => {
   const [orders, setOrders] = useState([]);
 
+  // Fetch orders from the backend
   useEffect(() => {
     const getOrders = async () => {
-      const res = await axios.get(`http://localhost:8020/Order/getOrders`);
-      setOrders(res.data);
-      console.log(res.data);
+      try {
+        const res = await axios.get(`http://localhost:8020/Order/getOrders`);
+        setOrders(res.data);
+        console.log("Orders fetched:", res.data);
+      } catch (err) {
+        console.error("Error fetching orders:", err);
+      }
     };
     getOrders();
   }, []);
 
+  // Update order status
   const handleUpdateState = async (orderId, newState) => {
     try {
       const res = await axios.put(
@@ -21,6 +27,7 @@ const ViewOrders = () => {
       );
       const updatedOrder = res.data;
 
+      // Update the order in the local state
       setOrders((prevOrders) => {
         const newOrders = [...prevOrders];
         const index = newOrders.findIndex((order) => order._id === updatedOrder._id);
@@ -28,7 +35,7 @@ const ViewOrders = () => {
         return newOrders;
       });
     } catch (err) {
-      console.log(err);
+      console.error("Error updating order status:", err);
     }
   };
 

@@ -192,27 +192,14 @@ const getUsers = async (req, res, next) => {
 
 //logout function
 const logout = (req, res, next) => {
-  const token = req.cookies.token; // Use cookie-parser to access token
-
-  if (!token) {
-    return res.status(400).json({ message: "Couldn't find token" });
-  }
-
-  jwt.verify(token, process.env.SECRET, (err, user) => {
-    if (err) {
-      console.log(err);
-      return res.status(403).json({ message: "Authentication failed" });
-    }
-
-    // Clear the cookie
-    res.clearCookie("token", {
-      path: "/",
-      httpOnly: true,
-      sameSite: "lax",
-    });
-
-    return res.status(200).json({ message: "Successfully Logged Out" });
+  // Clear the cookie
+  res.clearCookie("token", {
+    path: "/",
+    httpOnly: true,
+    sameSite: "lax",
   });
+
+  return res.status(200).json({ message: "Successfully logged out" });
 };
 
 

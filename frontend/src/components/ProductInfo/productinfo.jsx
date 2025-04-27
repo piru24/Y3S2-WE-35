@@ -3,12 +3,13 @@ import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { addProduct } from "../Store";
 import { useDispatch } from "react-redux";
+import { FiStar, FiPackage, FiDollarSign, FiUser } from "react-icons/fi";
+import { MdFastfood } from "react-icons/md";
 
 const Productinfo = () => {
   const [product, setProduct] = useState({});
   const [quantity, setQuantity] = useState(1);
   const { id } = useParams();
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -19,7 +20,6 @@ const Productinfo = () => {
           `http://localhost:8070/products/getProduct/${id}`
         );
         setProduct(response.data.product);
-        console.log(response.data.product);
       } catch (err) {
         console.log(err);
       }
@@ -40,69 +40,82 @@ const Productinfo = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8">
+    <div className="bg-gradient-to-br from-green-50 via-yellow-50 to-green-100 py-12">
       <div className="container mx-auto px-4">
-        <div className="bg-white shadow-md rounded-lg p-6 flex flex-col md:flex-row gap-8">
+        <div className="bg-white/90 shadow-2xl rounded-3xl p-8 flex flex-col md:flex-row gap-10 border border-green-100">
           {/* Product Image */}
-          <div className="flex-shrink-0">
+          <div className="flex-shrink-0 w-full md:w-1/2">
             <img
               src={product.image}
               alt={product.name}
-              className="w-full h-64 object-cover rounded-lg"
+              className="w-full h-96 object-cover rounded-2xl shadow-lg hover:scale-105 transition-transform duration-300"
             />
           </div>
 
           {/* Product Details */}
-          <div className="flex-grow">
-            <h1 className="text-3xl font-bold text-gray-800 mb-4">
+          <div className="flex-grow space-y-6">
+            <h1 className="text-4xl font-extrabold text-green-800 mb-2">
               {product.name}
             </h1>
-            <p className="text-gray-600 mb-2">
-              <span className="font-semibold">Brand:</span> {product.brand}
-            </p>
-            <p className="text-gray-600 mb-2">
-              <span className="font-semibold">Price:</span> Rs. {product.price}
-            </p>
-            <p className="text-gray-600 mb-2">
-              <span className="font-semibold">Weight:</span> {product.weight}g
-            </p>
-            <p className="text-gray-600 mb-4">
-              <span className="font-semibold">Seller:</span> {product.sellerName}
-            </p>
+            
+            <div className="space-y-4">
+              <div className="flex items-center gap-3 text-lg text-green-700">
+                <FiDollarSign className="text-2xl text-yellow-500" />
+                <span className="font-bold">Price:</span>
+                <span className="bg-green-100 px-4 py-1 rounded-full">₹{product.price}</span>
+              </div>
+              
+              <div className="flex items-center gap-3 text-lg text-green-700">
+                <FiPackage className="text-2xl text-yellow-500" />
+                <span className="font-bold">Weight:</span>
+                <span className="bg-green-100 px-4 py-1 rounded-full">{product.weight}g</span>
+              </div>
+
+              <div className="flex items-center gap-3 text-lg text-green-700">
+                <FiUser className="text-2xl text-yellow-500" />
+                <span className="font-bold">Seller:</span>
+                <span className="bg-green-100 px-4 py-1 rounded-full">{product.sellerName}</span>
+              </div>
+            </div>
 
             {/* Rate Seller Button */}
             <button
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition mb-4"
-              onClick={() =>
-                navigate(`/rateSeller/${product.sellerName}/${product.sellerId}`)
-              }
+              className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-green-900 px-6 py-3 rounded-xl font-bold shadow hover:scale-[1.02] transition flex items-center justify-center gap-2"
+              onClick={() => navigate(`/rateSeller/${product.sellerName}/${product.sellerId}`)}
             >
+              <FiStar className="text-xl" />
               Rate This Seller
             </button>
 
             {/* Quantity Selector */}
-            <div className="flex items-center gap-4 mb-6">
-              <button
-                className="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400 transition"
-                onClick={() => handleQuantity("dec")}
-              >
-                -
-              </button>
-              <span className="text-lg font-semibold">{quantity}</span>
-              <button
-                className="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400 transition"
-                onClick={() => handleQuantity("inc")}
-              >
-                +
-              </button>
+            <div className="flex items-center justify-between bg-green-50 p-4 rounded-xl">
+              <span className="text-lg font-semibold text-green-800">Quantity:</span>
+              <div className="flex items-center gap-4">
+                <button
+                  className="bg-green-600 text-white w-10 h-10 rounded-full hover:bg-green-700 transition flex items-center justify-center"
+                  onClick={() => handleQuantity("dec")}
+                >
+                  -
+                </button>
+                <span className="text-2xl font-bold text-green-800 w-8 text-center">
+                  {quantity}
+                </span>
+                <button
+                  className="bg-green-600 text-white w-10 h-10 rounded-full hover:bg-green-700 transition flex items-center justify-center"
+                  onClick={() => handleQuantity("inc")}
+                >
+                  +
+                </button>
+              </div>
             </div>
 
             {/* Add to Cart Button */}
             <button
-              className="bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition"
+              className="w-full bg-gradient-to-r from-green-600 to-green-700 text-white px-6 py-4 rounded-xl font-bold shadow hover:scale-[1.02] transition flex items-center justify-center gap-2 text-lg"
               onClick={handleAddtoCart}
             >
-              Add to Cart 🛒
+              <MdFastfood className="text-xl" />
+              Add to Cart
             </button>
           </div>
         </div>
