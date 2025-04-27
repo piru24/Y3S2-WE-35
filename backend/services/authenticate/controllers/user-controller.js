@@ -189,7 +189,13 @@ const logout = (req, res, next) => {
       return res.status(403).json({ message: "Authentication failed" });
     }
 
-    res.clearCookie("token");
+    // Clear the cookie
+    res.clearCookie("token", {
+      path: "/",
+      httpOnly: true,
+      sameSite: "lax",
+    });
+
     return res.status(200).json({ message: "Successfully Logged Out" });
   });
 };
