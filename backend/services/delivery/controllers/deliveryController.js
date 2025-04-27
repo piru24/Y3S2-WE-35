@@ -4,8 +4,9 @@ const axios = require('axios');
 // Custom Files
 const k = require("../constants");
 
-
-
+// const Order = require("../../../Order/models/Order"); 
+const AcceptedDelivery = require('../model/AcceptedDelivery');
+const Delivery = require('../../delivery/model/delivery');
 
 
 //ping server
@@ -142,3 +143,32 @@ async function getDistanceDuration(location1, location2){
     return {"status":"error", "error": e};
   }
 }
+
+//
+// Accept Delivery
+const acceptDelivery = async (req, res) => {
+  const { orderId } = req.body;
+  const driverId = req.user?.id || "64fe5b1234567890abcd1234"; // Replace with req.user.id if you use Auth
+
+  try {
+    const alreadyAccepted = await AcceptedDelivery.findOne({ orderId });
+    if (alreadyAccepted) {
+      return res.status(400).json({ message: "This order has already been accepted." });
+    }
+
+    const newAccepted = new AcceptedDelivery({
+      orderId,
+      driverId,
+      status: "On the way"
+    });
+
+    await newAccepted.save();
+
+    return res.status(200).json({ message: "Order accepted successfully", accepted: newAccepted });
+  } catch (err) {
+    console.error("Accept Error:", err);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+exports.acceptDelivery = acceptDelivery;

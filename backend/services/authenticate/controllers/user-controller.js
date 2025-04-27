@@ -151,6 +151,21 @@ const getUser = async (req, res, next) => {
   }
   return res.status(200).json({ user });//if user is exist
 }
+const getUserById = async (req, res) => {
+  const { id } = req.params;
+  
+  try {
+    const user = await User.findById(id, "-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    return res.status(200).json({ user });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
 
 
 //get all the users
@@ -329,8 +344,9 @@ const getSellerInfo = async (req, res) => {
 
 exports.signUp = signUp;
 exports.login = login;
-exports.getUser = getUser;
+exports.getUserById = getUserById;
 exports.getUsers = getUsers;
+exports.getUser = getUser;
 exports.logout = logout;
 exports.deleteUser = deleteUser;
 exports.updateProfile = updateProfile;

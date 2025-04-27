@@ -18,9 +18,13 @@ import UpdateACC from "./components/Profile/updateProfile";
 import UpdatePWD from "./components/Profile/updatePWD";
 import AddPayment from "./components/payment/dummyPayment";
 import RateFormSeller from "./components/rate&Review/RateFormSeller";
+import Test1 from "./components/deliverDetails/diliverdetails"
 import { useSelector } from "react-redux";
 import Home from "./components/home_Pages/Home";
 
+import DeliveryDashboard from "./components/delivery/DeliveryDashboard";
+// import RealTimeTracking from "./components/delivery/RealTimeTracking";
+import Notify from "./components/notify/notify";
 
 const App = () => {
 
@@ -30,6 +34,7 @@ const App = () => {
 
   return (
     <BrowserRouter>
+<<<<<<< HEAD
   <Header />
   <Routes>
     <Route path="/signUp" element={<Register />} />
@@ -72,6 +77,38 @@ const App = () => {
     )}
   </Routes>
 </BrowserRouter>
+=======
+    <Header/>
+      <Routes>
+        <Route path="/signUp" element={<Register/>}/>
+        <Route path="/login" element={<Login/>}/>
+
+      {isLoggedIn && <Route path="/profile" element={<Profile/>}/>} 
+       {isLoggedIn && <Route path="/profile" element={<Profile/>}/>}
+       {isLoggedIn && <Route path="/admin" element={<Admin/>}/>} 
+        <Route path="/products" element={<Products/>}/>
+        <Route path="/viewOrders" element={<ViewOrders/>}/>
+       {isLoggedIn && <Route path="/getProduct/:id" element={<Productinfo/>}/>}
+       {isLoggedIn && <Route path="/cart" element={<Cart/>}/>}
+       {isLoggedIn && <Route path="/getOrders" element={<OrderHistory/>}/>}
+       {isLoggedIn && <Route path="/admin/viewOrders" element={<ViewOrders/>}/>}
+       {isLoggedIn && <Route path="/addProduct" element={<AddProducts/>}/>}
+       {isLoggedIn && <Route path="/updateProduct/:id" element={<UpdateProducts/>}/>}
+       {isLoggedIn && <Route path="/updateUser/:id" element={<UpdateACC/>}/>}
+       {isLoggedIn && <Route path="/updatePWD/:id" element={<UpdatePWD/>}/>}
+       {isLoggedIn && <Route path="/dummyPayment" element={<AddPayment/>}/>}
+       {isLoggedIn && <Route path="/rateBuyer/:id" element={<RateForm/>}/>}
+       {isLoggedIn && <Route path="/rateSeller/:sellerName/:id" element={<RateFormSeller/>}/>}
+       {isLoggedIn && <Route path="/test1" element={<Test1/>}/>}
+       {isLoggedIn && <Route path="/deliveryDashboard" element={<DeliveryDashboard/>}/>}
+       {/* {isLoggedIn && <Route path="/track/:orderId" element={<RealTimeTracking />}/>} */}
+       {isLoggedIn && <Route path="/notify/:orderId" element={<Notify />}/>}
+
+       <Route path="*" element={<h1>Page Not Found</h1>}/>
+      </Routes>
+      
+    </BrowserRouter>
+>>>>>>> origin/main
   );
 }
 
