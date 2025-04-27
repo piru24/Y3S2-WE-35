@@ -91,11 +91,29 @@ const sendLogoutReq = async () => {
 
               {isLoggedIn && role === 'buyer' && (
                 <Link className="orderHistory" to="./getOrders">
-                  Order Hisory
+                  Order History
                 </Link>
               )}
+
+              {/* <span>{isLoggedIn && role === 'buyer' && <Link to="./notify">Notifications</Link>}</span> */}
+
               <br />
+
               <span>{isLoggedIn && role === 'buyer' && <Link to="./profile">Profile</Link>}</span>
+
+              {/* delivery person navigation */}
+
+              {isLoggedIn && role === 'delivery' && (
+                <>
+                  {/* Delivery Person Profile */}
+                  <span>
+                    <Link to="./profile">
+                    {/* <i className="bi bi-person-circle"></i> */} Profile </Link>
+                  </span>
+                  <br />
+                </>
+              )}
+
             </li>
           </ul>
         </nav>

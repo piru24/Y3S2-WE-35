@@ -64,9 +64,6 @@ const ViewOrders = () => {
             <button onClick={() => handleUpdateState(order._id, "dispatched")}>
               dispatched
             </button>
-            <button onClick={() => handleUpdateState(order._id, "delivered")}>
-              delivered
-            </button>
           </div>
         ))}
     </div>

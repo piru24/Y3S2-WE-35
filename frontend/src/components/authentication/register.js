@@ -54,6 +54,8 @@ const Register = () => {
         navigate("/admin");
       } else if (response.User.role === "seller") {
         navigate("/profile");
+      } else if (response.User.role === "delivery") {
+        navigate("/delivery");
       } else {
         navigate("/products");
       }
@@ -100,6 +102,7 @@ const Register = () => {
             <option>Select the Role</option>
             <option value="buyer"> I am a buyer</option>
             <option value="seller">I am a seller</option>
+            <option value="delivery">I am a delivery person</option>
           </select>
 
         </div>
