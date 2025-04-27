@@ -2,23 +2,16 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert2";
 import axios from "axios";
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container';
-import '../../assets/images/AddProducts.css';
 
 export default function AddProducts() {
-
   const [products, setProducts] = useState({
-        name: "", 
-        brand: "",
-        price: "",
-        weight: "",
-        upload_date: "",
-        description: "",
-        image: "",
+    name: "",
+    brand: "",
+    price: "",
+    weight: "",
+    upload_date: "",
+    description: "",
+    image: "",
   });
 
   const handleChangeText = (name, value) => {
@@ -27,109 +20,163 @@ export default function AddProducts() {
 
   const addProducts = (e) => {
     e.preventDefault();
-    console.log("submit");
     axios
       .post("http://localhost:8070/products/addProduct", products)
       .then(() => {
-        swal.fire(`successfully added`);
+        swal.fire(`Product added successfully!`);
         navigate("/");
       })
       .catch((error) => {
         console.log(error);
       });
   };
-  const navigate = useNavigate();
-  return (
-    
-    <Container fluid>
-       <h1 className="mb-4">Add Products</h1>
-      <Form onSubmit={addProducts}>
-        
-        <Row className="mb-3">
-          <Form.Group as={Col}  controlId="formBasicName">
-            <Form.Label>Name</Form.Label>
-            <Form.Control 
-                name="name"
-                type="text" 
-                placeholder="Username"   
-                title="Name must be required"
-                required
-                onChange={(val) => handleChangeText("name", val)}/>
-            
-          </Form.Group>
-          <Form.Group as={Col} controlId="formBasicBrand">
-            <Form.Label>Brand</Form.Label>
-            <Form.Control 
-                name="brand"
-                type="text" 
-                placeholder="Brand"   
-                title="Brand must be required"
-                required
-                onChange={(val) => handleChangeText("brand", val)}/>
-          </Form.Group>
-        </Row> 
-        <Row className="mb-3">
-          <Form.Group as={Col}  controlId="formBasicPrice">
-            <Form.Label>Price</Form.Label>
-            <Form.Control 
-                name="price"
-                type="text" 
-                placeholder="Price"   
-                title="Price must be required"
-                required
-                onChange={(val) => handleChangeText("price", val)}/>
-            
-          </Form.Group>
-          <Form.Group as={Col} controlId="formBasicWeight">
-            <Form.Label>Weight</Form.Label>
-            <Form.Control 
-                name="weight"
-                type="text" 
-                placeholder="weight"   
-                title="Weight must be required"
-                required
-                onChange={(val) => handleChangeText("weight", val)}/>
-          </Form.Group>
-        </Row> 
-        <Row className="mb-3">
-          <Form.Group as={Col}  controlId="formBasicUpload_date">
-            <Form.Label>Upload Date</Form.Label>
-            <Form.Control 
-                name="upload_date"
-                type="date" 
-                placeholder="Upload Date"   
-                title="Upload Date must be required"
-                required
-                onChange={(val) => handleChangeText("upload_date", val)}/>
-            
-          </Form.Group>
-          <Form.Group as={Col} controlId="formBasicaImage">
-            <Form.Label>Image</Form.Label>
-            <Form.Control 
-                name="image"
-                type="text" 
-                placeholder="Image"   
-                title="Image must be required"
-                required
-                onChange={(val) => handleChangeText("image", val)}/>
-          </Form.Group>
-        </Row> 
-        <Form.Group className="mb-3" controlId="formGroupEmail">
-        <Form.Label>Description</Form.Label>
-            <Form.Control 
-                name="description"
-                type="text" 
-                placeholder="Description"   
-                title="Description must be required"
-                required
-                onChange={(val) => handleChangeText("description", val)}/>
-      </Form.Group>  
 
-          <Button variant="primary" type="submit">
-            Submit
-          </Button>
-         
-        </Form>
-        </Container>
+  const navigate = useNavigate();
+
+  return (
+    <div className="min-h-screen bg-gray-100 py-8">
+      <div className="container mx-auto px-4">
+        <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
+          Add New Product
+        </h1>
+        <form
+          onSubmit={addProducts}
+          className="bg-white shadow-md rounded-lg p-6 space-y-6"
+        >
+          {/* Name and Brand */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label
+                htmlFor="name"
+                className="block text-gray-700 font-medium mb-2"
+              >
+                Name
+              </label>
+              <input
+                name="name"
+                type="text"
+                placeholder="Enter product name"
+                required
+                onChange={(val) => handleChangeText("name", val)}
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="brand"
+                className="block text-gray-700 font-medium mb-2"
+              >
+                Brand
+              </label>
+              <input
+                name="brand"
+                type="text"
+                placeholder="Enter brand name"
+                required
+                onChange={(val) => handleChangeText("brand", val)}
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          </div>
+
+          {/* Price and Weight */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label
+                htmlFor="price"
+                className="block text-gray-700 font-medium mb-2"
+              >
+                Price (Rs.)
+              </label>
+              <input
+                name="price"
+                type="number"
+                placeholder="Enter price"
+                required
+                onChange={(val) => handleChangeText("price", val)}
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="weight"
+                className="block text-gray-700 font-medium mb-2"
+              >
+                Weight (g)
+              </label>
+              <input
+                name="weight"
+                type="number"
+                placeholder="Enter weight"
+                required
+                onChange={(val) => handleChangeText("weight", val)}
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          </div>
+
+          {/* Upload Date and Image */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label
+                htmlFor="upload_date"
+                className="block text-gray-700 font-medium mb-2"
+              >
+                Upload Date
+              </label>
+              <input
+                name="upload_date"
+                type="date"
+                required
+                onChange={(val) => handleChangeText("upload_date", val)}
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="image"
+                className="block text-gray-700 font-medium mb-2"
+              >
+                Image URL
+              </label>
+              <input
+                name="image"
+                type="text"
+                placeholder="Enter image URL"
+                required
+                onChange={(val) => handleChangeText("image", val)}
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          </div>
+
+          {/* Description */}
+          <div>
+            <label
+              htmlFor="description"
+              className="block text-gray-700 font-medium mb-2"
+            >
+              Description
+            </label>
+            <textarea
+              name="description"
+              placeholder="Enter product description"
+              required
+              onChange={(val) => handleChangeText("description", val)}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              rows="4"
+            ></textarea>
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200"
+          >
+            Add Product
+          </button>
+        </form>
+      </div>
+    </div>
   );
 }
