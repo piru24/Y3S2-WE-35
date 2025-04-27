@@ -47,6 +47,8 @@ const Login = () => {
         navigate("/admin");
       } else if (response.User.role === "seller") {
         navigate("/profile");
+      } else if (response.User.role === "delivery") {
+        navigate("/deliveryDashboard");
       } else {
         navigate("/products");
       }

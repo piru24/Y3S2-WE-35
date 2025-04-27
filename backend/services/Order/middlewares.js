@@ -17,31 +17,32 @@ const requireAuth = (req, res, next) => {
   }
 };
 
-const requireRoleSeller = (req, res, next) => {
-  if (req.userRole === "seller") {
-    next();
-  } else {
-    res.status(403).json({ message: 'Unauthorized' });
-  }
+// Generic role checker that accepts multiple roles
+const requireRole = (...allowedRoles) => {
+  return (req, res, next) => {
+    if (!req.userRole) {
+      return res.status(403).json({ message: 'Role information missing' });
+    }
+    
+    if (allowedRoles.includes(req.userRole)) {
+      return next();
+    }
+    
+    res.status(403).json({ message: 'Unauthorized - Insufficient permissions' });
+  };
 };
 
-const requireRoleAdmin = (req, res, next) => {
-  if (req.userRole === "admin") {
-    next();
-  } else {
-    res.status(403).json({ message: 'Unauthorized' });
-  }
-};
+// Specific role checkers (kept for backward compatibility)
+const requireRoleSeller = (req, res, next) => requireRole('seller')(req, res, next);
+const requireRoleAdmin = (req, res, next) => requireRole('admin')(req, res, next);
+const requireRoleBuyer = (req, res, next) => requireRole('buyer')(req, res, next);
+const requireRoleDelivery = (req, res, next) => requireRole('delivery')(req, res, next);
 
-const requireRoleBuyer = (req, res, next) => {
-  if (req.userRole === "buyer") {
-    next();
-  } else {
-    res.status(403).json({ message: 'Unauthorized' });
-  }
+module.exports = {
+  requireAuth,
+  requireRole, // The new flexible role checker
+  requireRoleSeller,
+  requireRoleAdmin,
+  requireRoleBuyer,
+  requireRoleDelivery
 };
-
-exports.requireAuth = requireAuth
-exports.requireRoleSeller = requireRoleSeller;
-exports.requireRoleAdmin = requireRoleAdmin;
-exports.requireRoleBuyer = requireRoleBuyer;

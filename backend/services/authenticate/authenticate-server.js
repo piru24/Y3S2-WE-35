@@ -19,6 +19,7 @@ app.use(cors({credentials: true, origin: "http://localhost:3000"}));
 app.use(bodyParser.json());
 app.use('/User', router)
 
+
 const link="mongodb+srv://Piruthivi:Ruthi24@cluster0.nt1n9me.mongodb.net/food";
 
 mongoose.connect(link, {

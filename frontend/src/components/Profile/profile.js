@@ -236,7 +236,27 @@ const Profile = () =>{
       </table>
       :<h1><center>There is no any Products</center></h1>
       </div>)}  
-      
+
+      {/* delivery person */}
+      {user.role === "delivery" && (
+        <div className="delivery-info-box bg-light p-4 rounded shadow-sm my-4">
+          <h2 className="text-center text-primary mb-3">My Delivery Profile</h2>
+          <div className="delivery-info p-3 bg-white rounded shadow-sm">
+            <p><strong>Delivery Person ID:</strong> <span className="text-muted">{user._id}</span></p>
+            <p><strong>Name:</strong> <span className="text-muted">{user.name}</span></p>
+            <p><strong>Contact Number:</strong> <span className="text-muted">{user.mobile}</span></p>
+            <p><strong>Area:</strong> <span className="text-muted">{user.address}</span></p>
+            <div className="text-center">
+              <button
+                className="btn btn-info btn-lg w-50"
+                onClick={() => navigate("/assignedDeliveries")}
+              >
+                View Assigned Deliveries
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

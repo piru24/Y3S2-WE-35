@@ -18,8 +18,12 @@ import UpdateACC from "./components/Profile/updateProfile";
 import UpdatePWD from "./components/Profile/updatePWD";
 import AddPayment from "./components/payment/dummyPayment";
 import RateFormSeller from "./components/rate&Review/RateFormSeller";
+import Test1 from "./components/deliverDetails/diliverdetails"
 import { useSelector } from "react-redux";
 
+import DeliveryDashboard from "./components/delivery/DeliveryDashboard";
+// import RealTimeTracking from "./components/delivery/RealTimeTracking";
+import Notify from "./components/notify/notify";
 
 const App = () => {
 
@@ -49,6 +53,11 @@ const App = () => {
        {isLoggedIn && <Route path="/dummyPayment" element={<AddPayment/>}/>}
        {isLoggedIn && <Route path="/rateBuyer/:id" element={<RateForm/>}/>}
        {isLoggedIn && <Route path="/rateSeller/:sellerName/:id" element={<RateFormSeller/>}/>}
+       {isLoggedIn && <Route path="/test1" element={<Test1/>}/>}
+       {isLoggedIn && <Route path="/deliveryDashboard" element={<DeliveryDashboard/>}/>}
+       {/* {isLoggedIn && <Route path="/track/:orderId" element={<RealTimeTracking />}/>} */}
+       {isLoggedIn && <Route path="/notify/:orderId" element={<Notify />}/>}
+
        <Route path="*" element={<h1>Page Not Found</h1>}/>
       </Routes>
       

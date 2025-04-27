@@ -2,6 +2,7 @@ const Order = require("../model/order");
 const Key = process.env.STRIPE_SECRET_KEY;
 const stripe = require("stripe")(Key);
 
+
 const addOrder = async (req, res, next) => {
   let order;
   try {
@@ -54,6 +55,7 @@ const getOrder = async (req, res, next) => {
   }
 };
 
+
 const getOrderByBuyersId = async (req, res, next) => {
   try {
     const orders = await Order.find({ userId: req.userId });
@@ -91,6 +93,17 @@ const stripePay = async (req, res) => {
   );
   
 };
+
+const getDispatchedOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({ status: "dispatched" });
+    res.status(200).json(orders);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch dispatched orders" });
+  }
+};
+
+
 exports.addOrder = addOrder;
 exports.updateOrder = updateOrder;
 exports.getOrder = getOrder;
@@ -98,3 +111,4 @@ exports.getAllOrder = getAllOrder;
 exports.getOrderByBuyersId = getOrderByBuyersId;
 exports.deleteOrder = deleteOrder;
 exports.stripePay = stripePay;
+exports.getDispatchedOrders = getDispatchedOrders;
