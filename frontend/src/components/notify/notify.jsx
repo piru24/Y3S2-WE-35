@@ -123,14 +123,14 @@ const Notify = () => {
       sx={{
         margin: { xs: 1, md: 3 },
         padding: { xs: 2, md: 4 },
-        background: 'linear-gradient(135deg, #f8ffae 0%, #43e97b 100%)',
+        background: 'linear-gradient(135deg,rgb(141, 206, 84) 0%,rgb(29, 107, 55) 100%)',
         borderRadius: 4,
         boxShadow: 6,
       }}
     >
       {/* Header */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#256029', display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#43e97b', display: 'flex', alignItems: 'center', gap: 1 }}>
           <RestaurantMenuIcon fontSize="large" sx={{ color: '#43e97b' }} />
           Order Tracking
         </Typography>

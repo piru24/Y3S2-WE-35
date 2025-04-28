@@ -32,7 +32,7 @@ export default function AddProducts() {
   const addProducts = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:8070/products/addProduct", products)
+      .post("http://localhost:8070/products/addProduct", products, { withCredentials: true })
       .then(() => {
         swal.fire({
           title: "Product added successfully!",
@@ -40,7 +40,7 @@ export default function AddProducts() {
           background: "#f0fdf4",
           confirmButtonColor: "#16a34a"
         });
-        navigate("/");
+        navigate("/profile");
       })
       .catch((error) => {
         swal.fire({
@@ -56,9 +56,11 @@ export default function AddProducts() {
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
+    setIsUploading(true);
     const reader = new FileReader();
     reader.onloadend = () => {
-      setProducts({ ...products, image: reader.result }); // reader.result is a base64 string
+      setProducts({ ...products, image: reader.result });
+      setIsUploading(false);
     };
     reader.readAsDataURL(file);
   };

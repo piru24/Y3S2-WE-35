@@ -33,6 +33,7 @@ export default function UpdateProducts() {
   const handleChangeText = (name, val) => {
     setProducts({ ...products, [name]: val.target.value });
   };
+  
 
   const UpdateProductsHandler = async (e) => {
     e.preventDefault();
