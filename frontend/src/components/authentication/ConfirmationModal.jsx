@@ -1,7 +1,15 @@
-// New components/CofirmationModal.jsx
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-export const ConfirmationModal = ({ isOpen, onClose, onConfirm, message }) => {
+const ConfirmationModal = ({ isOpen, onClose, onConfirm, message }) => {
+  const navigate = useNavigate();
+
+  const handleConfirm = async () => {
+    if (onConfirm) await onConfirm();
+    navigate("/", { replace: true });
+    window.location.reload();
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -16,7 +24,7 @@ export const ConfirmationModal = ({ isOpen, onClose, onConfirm, message }) => {
             Cancel
           </button>
           <button
-            onClick={onConfirm}
+            onClick={handleConfirm}
             className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
           >
             Confirm

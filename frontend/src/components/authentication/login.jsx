@@ -190,9 +190,9 @@ const LoginModal = ({ isOpen, onClose, onSuccess }) => {
 
   const validateForm = () => {
     const newErrors = {};
-    if (!validators.validateEmail(formData.email)) newErrors.email = 'Invalid email format';
-    if (!validators.validatePassword(formData.password)) newErrors.password = 'Password must be at least 8 characters';
-    setErrors(newErrors);
+    // if (!validators.validateEmail(formData.email)) newErrors.email = 'Invalid email format';
+    // if (!validators.validatePassword(formData.password)) newErrors.password = 'Password must be at least 8 characters';
+    // setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 

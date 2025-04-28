@@ -98,7 +98,7 @@ const DeliveryTracking = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-yellow-50 to-green-100 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-500 via-gray-400 to-green-700 py-12 px-4">
       <div className="max-w-4xl mx-auto">
         <div className="bg-white/90 backdrop-blur-lg rounded-2xl shadow-xl p-8 border border-green-100">
           <div className="flex items-center gap-4 mb-8">

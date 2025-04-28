@@ -20,8 +20,25 @@ app.use(bodyParser.json());
 app.use("/Order",router)
 const link="mongodb+srv://Piruthivi:Ruthi24@cluster0.nt1n9me.mongodb.net/food";
 
-mongoose.connect(link)
-	.then(()=>console.log("Connected to DataBase"))
-    .then(() =>{
-        app.listen(PORT)
-    }).catch((err)=>console.log(err));
+mongoose.connect(link, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+
+const connection
+    = mongoose.connection;
+connection.once("open", () => {
+    console.log("MongoDB Connection Success!");
+}
+);
+
+app.listen(PORT, () => {
+    console.log(`Order Server is up and running on Port: ${PORT}`)
+}
+);
+
+// mongoose.connect(link)
+// 	.then(()=>console.log("Connected to DataBase"))
+//     .then(() =>{
+//         app.listen(PORT)
+//     }).catch((err)=>console.log(err));

@@ -40,7 +40,7 @@ const Productinfo = () => {
   };
 
   return (
-    <div className="bg-gradient-to-br from-green-50 via-yellow-50 to-green-100 py-12">
+    <div className="bg-gradient-to-br from-gray-500 via-gray-400 to-green-700 py-12">
       <div className="container mx-auto px-4">
         <div className="bg-white/90 shadow-2xl rounded-3xl p-8 flex flex-col md:flex-row gap-10 border border-green-100">
           {/* Product Image */}

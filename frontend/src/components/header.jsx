@@ -19,12 +19,13 @@ const NAV_CONFIG = {
     { path: "/products", label: "Browse" },
     { path: "/cart", label: (qty) => `Cart (${qty})` },
     { path: "/getOrders", label: "Orders" },
+    // { path: "/deliveryDashboard", label: "Delivery" },
     { path: "/profile", label: "Profile" },
   ],
   seller: [
-    { path: "/seller/dashboard", label: "Dashboard" },
-    { path: "/seller/products", label: "My Products" },
-    { path: "/seller/orders", label: "Sales" },
+    // { path: "/seller/dashboard", label: "Dashboard" },
+    { path: "/seller/dashboard", label: "My Products" },
+    { path: "/viewOrders", label: "Sales" },
     { path: "/profile", label: "Profile" },
   ],
   admin: [
@@ -34,7 +35,7 @@ const NAV_CONFIG = {
   ],
   delivery: [
     { path: "/profile", label: "Profile" },
-    { path: "/assignedDeliveries", label: "Assigned Deliveries" },
+    { path: "/deliveryDashboard", label: "Assigned Deliveries" },
   ],
 };
 
@@ -49,59 +50,58 @@ const Header = () => {
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
 
-  // Fetch user role on login
+  // Check auth status on initial load
   useEffect(() => {
-    if (!isLoggedIn) return setUserRole("");
-    
-    const getUserProfile = async () => {
+    const checkAuthStatus = async () => {
       try {
-        const res = await axios.get(`${API_BASE}/User/profile`, { 
-          withCredentials: true 
+        const response = await axios.get(`${API_BASE}/User/profile`, {
+          withCredentials: true,
         });
-        
-        // Add null checks and use optional chaining
-        if (res.data?.user?.role) {
-          setUserRole(res.data.user.role);
-        } else {
-          console.error("Invalid user data structure:", res.data);
-          setUserRole("");
+        if (response.data?.user) {
+          dispatch(authActions.login({ 
+            role: response.data.user.role 
+          }));
+          setUserRole(response.data.user.role);
         }
-      } catch (err) {
-        console.error("Error fetching profile:", err.response?.data || err.message);
-        setUserRole("");
+      } catch (error) {
+        // Not authenticated - clear state
+        dispatch(authActions.logout());
       }
     };
-    
-    getUserProfile();
-  }, [isLoggedIn]);
-  
-  // Logout
-  const sendLogoutReq = async () => {
-    try {
-      const res = await axios.post(
-        `${API_BASE}/User/logout`,
-        {},
-        { withCredentials: true }
-      );
-      if (res.status === 200) {
-        return res;
-      }
-      throw new Error("Unable to logout. Please try again.");
-    } catch (err) {
-      console.error("Logout failed:", err);
-      throw err; // Ensure the error is propagated
-    }
-  };
+    checkAuthStatus();
+  }, [dispatch]);
 
+  // Handle profile fetch after login state changes
+  useEffect(() => {
+    if (!isLoggedIn) {
+      setUserRole("");
+      return;
+    }
+
+    const getUserProfile = async () => {
+      try {
+        const res = await axios.get(`${API_BASE}/User/profile`, {
+          withCredentials: true,
+        });
+        if (res.data?.user?.role) {
+          setUserRole(res.data.user.role);
+        }
+      } catch (err) {
+        console.error("Error fetching profile:", err);
+        dispatch(authActions.logout());
+      }
+    };
+    getUserProfile();
+  }, [isLoggedIn, dispatch]);
+
+  // Logout function
   const handleLogout = async () => {
     try {
-      await sendLogoutReq();
+      await axios.post(`${API_BASE}/User/logout`, {}, { withCredentials: true });
       dispatch(authActions.logout());
-      localStorage.clear();
       navigate("/", { replace: true });
-      window.location.reload();
     } catch (err) {
-      console.error("Logout Error:", err);
+      console.error("Logout error:", err);
     } finally {
       setShowLogoutConfirm(false);
     }
@@ -119,7 +119,7 @@ const Header = () => {
       : [];
 
   return (
-    <header className="bg-gradient-to-r from-green-900 via-green-800 to-green-700 shadow-md sticky top-0 z-50">
+    <header className="bg-gradient-to-r from-gray-900 via-green-800 to-green-900 shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
         <div className="flex justify-between items-center h-20">
           {/* Left: Logo + Nav */}

@@ -78,7 +78,7 @@ export default function AddPayment() {
 
   const navigate = useNavigate();
   return (
-    <div className="bg-gradient-to-br from-green-200 via-yellow-100 to-green-300 p-8 flex items-center justify-center">
+    <div className="bg-gradient-to-br from-gray-500 via-gray-400 to-green-700 p-8 flex items-center justify-center">
       <div className="bg-white/90 backdrop-blur-lg shadow-2xl rounded-2xl p-8 w-full max-w-lg border border-green-100">
         <div className="flex items-center justify-center gap-3 mb-8">
           <FaCreditCard className="text-3xl text-green-600" />

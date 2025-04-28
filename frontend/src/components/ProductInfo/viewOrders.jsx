@@ -1,16 +1,25 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { MdRestaurant, MdDeliveryDining, MdOutlineTimer } from "react-icons/md";
+import { FaRupeeSign } from "react-icons/fa";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+
+const statusOptions = [
+  { value: "pending", label: "Pending", className: "bg-yellow-100 text-yellow-800" },
+  { value: "confirmed", label: "Confirmed", className: "bg-blue-100 text-blue-800" },
+  { value: "dispatched", label: "Dispatched", className: "bg-purple-100 text-purple-800" },
+  { value: "delivered", label: "Delivered", className: "bg-green-100 text-green-800" }
+];
 
 const ViewOrders = () => {
   const [orders, setOrders] = useState([]);
 
-  // Fetch orders from the backend
+  // Fetch orders
   useEffect(() => {
     const getOrders = async () => {
       try {
         const res = await axios.get(`http://localhost:8020/Order/getOrders`);
         setOrders(res.data);
-        console.log("Orders fetched:", res.data);
       } catch (err) {
         console.error("Error fetching orders:", err);
       }
@@ -26,8 +35,6 @@ const ViewOrders = () => {
         { status: newState }
       );
       const updatedOrder = res.data;
-
-      // Update the order in the local state
       setOrders((prevOrders) => {
         const newOrders = [...prevOrders];
         const index = newOrders.findIndex((order) => order._id === updatedOrder._id);
@@ -40,101 +47,92 @@ const ViewOrders = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-500 via-gray-400 to-green-700 py-12">
       <div className="container mx-auto px-4">
-        <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
-          Manage Orders
-        </h1>
+        <div className="flex items-center justify-center gap-3 mb-10">
+          <div className="bg-green-500 p-3 rounded-full text-white shadow-lg">
+            <MdRestaurant className="text-4xl" />
+          </div>
+          <h1 className="text-4xl font-extrabold text-green-800">Manage Orders</h1>
+        </div>
 
         {orders.length === 0 ? (
-          <p className="text-center text-gray-600">No orders available.</p>
+          <div className="text-center bg-white/90 backdrop-blur-lg rounded-2xl p-12 shadow-sm">
+            <MdOutlineTimer className="text-6xl text-green-500 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-green-800">
+              No orders waiting
+            </h3>
+            <p className="text-green-600 mt-2">
+              New orders will appear here automatically
+            </p>
+          </div>
         ) : (
-          <div className="space-y-6">
+          <div className="w-full bg-white/90 rounded-2xl shadow-xl border border-green-100">
+            {/* Table header */}
+            <div className="grid grid-cols-12 gap-4 px-6 py-4 border-b border-green-100 bg-green-50 font-semibold text-green-800 text-sm uppercase tracking-wide">
+              <div className="col-span-1">#</div>
+              <div className="col-span-2">User ID</div>
+              <div className="col-span-2">Amount</div>
+              <div className="col-span-2">Status</div>
+              <div className="col-span-3">Products</div>
+              <div className="col-span-2 text-center">Actions</div>
+            </div>
+
+            {/* Table rows */}
             {orders.map((order, key) => (
               <div
                 key={key}
-                className="bg-white shadow-md rounded-lg p-6 border border-gray-200"
+                className={`grid grid-cols-12 gap-4 px-6 py-4 items-center border-b border-green-50 hover:bg-green-50 transition`}
               >
-                <h3 className="text-lg font-bold text-gray-800 mb-4">
-                  Order #{key + 1}
-                </h3>
-                <p className="text-gray-700 mb-2">
-                  <span className="font-semibold">User ID:</span> {order.userId}
-                </p>
-                <p className="text-gray-700 mb-2">
-                  <span className="font-semibold">Amount (Rs.):</span> {order.amount}
-                </p>
-                <p className="text-gray-700 mb-4">
-                  <span className="font-semibold">Order Status:</span>{" "}
-                  <span
-                    className={`inline-block px-3 py-1 rounded-full font-medium ${
-                      order.status === "pending"
-                        ? "bg-yellow-100 text-yellow-800"
-                        : order.status === "confirmed"
-                        ? "bg-blue-100 text-blue-800"
-                        : order.status === "dispatched"
-                        ? "bg-purple-100 text-purple-800"
-                        : order.status === "delivered"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-gray-100 text-gray-800"
-                    }`}
-                  >
-                    {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
-                  </span>
-                </p>
+                {/* Index */}
+                <div className="col-span-1 text-green-700 font-bold">{key + 1}</div>
 
-                <div className="overflow-x-auto">
-                  <table className="min-w-full bg-gray-50 rounded-lg overflow-hidden">
-                    <thead className="bg-gray-200">
-                      <tr>
-                        <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 uppercase">
-                          Name
-                        </th>
-                        <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 uppercase">
-                          Quantity
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-200">
-                      {order.products.map((product, pkey) => (
-                        <tr key={pkey}>
-                          <td className="px-4 py-2 text-sm text-gray-800">
-                            {product.name}
-                          </td>
-                          <td className="px-4 py-2 text-sm text-gray-800">
-                            {product.quantity}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                {/* User ID */}
+                <div className="col-span-2 font-mono text-green-700">{order.userId.slice(-8).toUpperCase()}</div>
+
+                {/* Amount */}
+                <div className="col-span-2 flex items-center gap-1 text-green-800 font-bold">
+                  <FaRupeeSign className="text-green-500" /> {order.amount}
                 </div>
 
-                <div className="mt-4 flex flex-wrap gap-4">
-                  <button
-                    onClick={() => handleUpdateState(order._id, "pending")}
-                    className="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-lg hover:bg-yellow-200 transition"
+                {/* Status */}
+                <div className="col-span-2">
+                  <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full font-medium text-xs ${
+                    order.status === "pending" ? "bg-yellow-100 text-yellow-800" :
+                    order.status === "confirmed" ? "bg-blue-100 text-blue-800" :
+                    order.status === "dispatched" ? "bg-purple-100 text-purple-800" :
+                    order.status === "delivered" ? "bg-green-100 text-green-800" :
+                    "bg-gray-100 text-gray-800"
+                  }`}>
+                    {order.status === "delivered" ? <CheckCircleIcon fontSize="small" /> : null}
+                    {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                  </span>
+                </div>
+
+                {/* Products */}
+                <div className="col-span-3">
+                  <div className="flex flex-wrap gap-2">
+                    {order.products.map((product, pkey) => (
+                      <span key={pkey} className="bg-green-100 text-green-800 px-2 py-1 rounded-lg text-xs font-medium">
+                        {product.name} <span className="text-green-600">x{product.quantity}</span>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Actions - Dropdown */}
+                <div className="col-span-2 flex justify-center">
+                  <select
+                    value={order.status}
+                    onChange={e => handleUpdateState(order._id, e.target.value)}
+                    className="px-3 py-2 rounded-lg border border-green-200 bg-green-50 text-green-800 font-semibold shadow focus:outline-none focus:ring-2 focus:ring-green-300 transition"
                   >
-                    Pending
-                  </button>
-                  <button
-                    onClick={() => handleUpdateState(order._id, "confirmed")}
-                    className="bg-blue-100 text-blue-800 px-4 py-2 rounded-lg hover:bg-blue-200 transition"
-                  >
-                    Confirmed
-                  </button>
-                  <button
-                    onClick={() => handleUpdateState(order._id, "dispatched")}
-                    className="bg-purple-100 text-purple-800 px-4 py-2 rounded-lg hover:bg-purple-200 transition"
-                  >
-                    Dispatched
-                  </button>
-                  <button
-                    onClick={() => handleUpdateState(order._id, "delivered")}
-                    className="bg-green-100 text-green-800 px-4 py-2 rounded-lg hover:bg-green-200 transition"
-                  >
-                    Delivered
-                  </button>
+                    {statusOptions.map(opt => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
             ))}

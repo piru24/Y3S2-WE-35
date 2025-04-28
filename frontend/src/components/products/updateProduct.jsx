@@ -59,7 +59,7 @@ export default function UpdateProducts() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-yellow-50 to-green-100 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-gray-500 via-gray-400 to-green-700 py-12">
       <div className="container mx-auto px-4">
         <div className="bg-white/90 backdrop-blur-lg rounded-2xl shadow-xl p-8 max-w-2xl mx-auto border border-green-100">
           <div className="flex items-center justify-center gap-3 mb-8">
@@ -87,12 +87,12 @@ export default function UpdateProducts() {
               </div>
               <div className="relative">
                 <label htmlFor="brand" className="block text-green-800 font-semibold mb-2">
-                  Brand
+                  Shop
                 </label>
                 <input
                   name="brand"
                   type="text"
-                  value={products.brand}
+                  value={products.description}
                   required
                   onChange={(val) => handleChangeText("brand", val)}
                   className="w-full pl-4 pr-4 py-3 border-2 border-green-100 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 bg-green-50"
@@ -120,18 +120,23 @@ export default function UpdateProducts() {
               </div>
               <div className="relative">
                 <label htmlFor="weight" className="block text-green-800 font-semibold mb-2">
-                  Weight (g)
+                  Portion for person
                 </label>
                 <div className="flex items-center">
                   <FaWeight className="text-green-500 mr-2" />
-                  <input
+                  <select
                     name="weight"
-                    type="number"
-                    value={products.weight}
                     required
+                    value={products.weight}
                     onChange={(val) => handleChangeText("weight", val)}
                     className="w-full pl-4 pr-4 py-3 border-2 border-green-100 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 bg-green-50"
-                  />
+                  >
+                    <option value="" disabled>
+                      Select
+                    </option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -181,7 +186,7 @@ export default function UpdateProducts() {
               </div>
             </div>
 
-            {/* Description */}
+            {/* Description
             <div className="relative">
               <label htmlFor="description" className="block text-green-800 font-semibold mb-2">
                 Description
@@ -197,7 +202,7 @@ export default function UpdateProducts() {
                   rows="4"
                 ></textarea>
               </div>
-            </div>
+            </div> */}
 
             {/* Submit Button */}
             <button

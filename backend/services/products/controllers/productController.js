@@ -32,9 +32,6 @@ const getAllProducts = async (req, res, next) => {
 };
 */
 
-
-
-
 //get all products
 const getAllProducts = async (req, res, next) => {
   let product;

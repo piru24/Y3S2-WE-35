@@ -30,11 +30,6 @@ const productSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'user', // or 'Seller' if you have a separate seller model
     required: true
-  },
-  sellerId: {
-    type: Schema.Types.ObjectId,
-    ref: 'user', // or 'Seller' if you have a separate seller model
-    required: true
   }
 });
 

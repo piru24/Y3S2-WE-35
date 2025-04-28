@@ -79,9 +79,9 @@ const Products = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-200 via-yellow-100 to-green-300">
+    <div className="min-h-screen bg-gradient-to-br from-gray-700 via-gray-400 to-green-700">
       <div className="container mx-auto px-4 py-10">
-        <h1 className="text-4xl font-extrabold text-center text-green-800 mb-10 tracking-tight drop-shadow">
+        <h1 className="text-4xl font-extrabold text-center text-green-400 mb-10 tracking-tight drop-shadow">
           Explore Our Menu
         </h1>
 

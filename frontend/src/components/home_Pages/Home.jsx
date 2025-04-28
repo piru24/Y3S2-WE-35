@@ -3,6 +3,9 @@ import { FiClock, FiStar, FiSearch } from "react-icons/fi";
 import { MdDeliveryDining } from "react-icons/md";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+
+
 axios.defaults.withCredentials = true;
 
 // Static product data
@@ -16,7 +19,7 @@ const staticProducts = [
     sellerName: "Pizza Palace",
     sellerAvailable: true,
     desc: "Classic tomato and mozzarella",
-    avgRating: 4.5
+    avgRating: 4.5,
   },
   {
     _id: 2,
@@ -27,7 +30,7 @@ const staticProducts = [
     sellerName: "Burger Barn",
     sellerAvailable: true,
     desc: "Juicy beef patty with cheese",
-    avgRating: 4.3
+    avgRating: 4.3,
   },
   {
     _id: 3,
@@ -38,8 +41,8 @@ const staticProducts = [
     sellerName: "Thosa Kada",
     sellerAvailable: true,
     desc: "Juicy beef patty with cheese",
-    avgRating: 4.3
-  }
+    avgRating: 4.3,
+  },
 ];
 
 const Home = () => {
@@ -54,56 +57,66 @@ const Home = () => {
   useEffect(() => {
     const getProducts = async () => {
       try {
+        let fetched = [];
         if (isLoggedIn) {
-          const res = await axios.get("http://localhost:8070/products/getProducts", { 
-            withCredentials: true 
-          });
-          setProducts(res.data);
-          extractCategories(res.data);
-        } else {
-          setProducts(staticProducts);
-          extractCategories(staticProducts);
+          const res = await axios.get(
+            "http://localhost:8070/products/getProducts",
+            {
+              withCredentials: true,
+            }
+          );
+          fetched = res.data;
         }
+        // Merge static + fetched (if any)
+        const combined = [...staticProducts, ...fetched];
+        setProducts(combined);
+        extractCategories(combined);
       } catch (err) {
-        console.log(err);
         setProducts(staticProducts);
         extractCategories(staticProducts);
       }
     };
     getProducts();
+    // eslint-disable-next-line
   }, [isLoggedIn]);
 
-  // Extract unique categories from products
-  const extractCategories = (products) => {
-    const uniqueCategories = [...new Set(products.map(product => product.category))];
-    const categoryOptions = uniqueCategories.map(category => ({
-      name: category.charAt(0).toUpperCase() + category.slice(1),
-      value: category.toLowerCase()
-    }));
-    setCategories([{ name: "All", value: "all" }, ...categoryOptions]);
+  // Extract unique categories
+  const extractCategories = (prods) => {
+    const unique = Array.from(new Set(prods.map((p) => p.category)));
+    setCategories([
+      { name: "All", value: "all" },
+      ...unique.map((cat) => ({
+        name: cat.charAt(0).toUpperCase() + cat.slice(1),
+        value: cat.toLowerCase(),
+      })),
+    ]);
   };
 
-  // Search products
-  const searchProduct = async (e) => {
-    const searchValue = e.target.value;
-    setSearchQuery(searchValue);
-    
-    try {
-      const { data } = await axios.get(
-        `http://localhost:8070/products/search/?search=${searchValue}`
-      );
-      setProducts(data.data.products);
-    } catch (err) {
-      console.log(err);
-    }
+  // // Search products
+  // const searchProduct = async (e) => {
+  //   const searchValue = e.target.value;
+  //   setSearchQuery(searchValue);
+
+  //   try {
+  //     const { data } = await axios.get(
+  //       `http://localhost:8070/products/search/?search=${searchValue}`
+  //     );
+  //     setProducts(data.data.products);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+  const searchProduct = (e) => {
+    setSearchQuery(e.target.value);
   };
 
   // Filter products based on search and category
-  const filteredProducts = products.filter(product => {
-    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         product.sellerName.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === "all" || 
-                          product.category === selectedCategory;
+  const filteredProducts = products.filter((product) => {
+    const matchesSearch =
+      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.sellerName.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory =
+      selectedCategory === "all" || product.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
@@ -112,7 +125,7 @@ const Home = () => {
   };
 
   return (
-    <div className="bg-gray-200 min-h-screen">
+    <div className="bg-gradient-to-br from-yellow-500 via-gray-400 to-green-700 min-h-screen">
       {/* Hero Section with Search */}
       <section
         className="relative h-80 bg-cover bg-center mb-2"
@@ -143,10 +156,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-
-      {/* Categories Carousel */}
-    
-
       {/* Featured Products */}
       <section className="container mx-auto px-4 py-4">
         <h2 className="text-3xl font-bold text-gray-800 mb-4">
@@ -202,7 +211,7 @@ const Home = () => {
                 <div className="flex items-center justify-between text-sm text-gray-600">
                   <div className="flex items-center space-x-2">
                     <FiStar className="text-yellow-500" />
-                    <span>{product.avgRating?.toFixed(1) || '4.5'}</span>
+                    <span>{product.avgRating?.toFixed(1) || "4.5"}</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <FiClock />
@@ -213,13 +222,11 @@ const Home = () => {
                     <span>Free</span>
                   </div>
                 </div>
-
-                <button
-                  onClick={() => addToCart(product)}
-                  className="w-full mt-4 px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-full transition-colors"
-                >
-                  Add to Cart
-                </button>
+                <Link to="/products">
+                  <button className="w-full mt-4 px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-full transition-colors">
+                    Browse
+                  </button>
+                </Link>
               </div>
             </div>
           ))}
@@ -227,15 +234,16 @@ const Home = () => {
       </section>
 
       {/* How It Works */}
-      <section className="bg-white py-16"
-       style={{
-        backgroundImage:
-          "linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('/images/delii.jpg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        height: "50vh",
-      }}
+      <section
+        className="bg-white py-16"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('/images/delii.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          height: "50vh",
+        }}
       >
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center text-white mb-12">
@@ -259,7 +267,10 @@ const Home = () => {
                 text: "Track delivery and enjoy your meal",
               },
             ].map((step, index) => (
-              <div key={index} className="text-green-600 bg-green-100 rounded-full p-4 inline-flex items-center justify-center shadow-lg gap-2">
+              <div
+                key={index}
+                className="text-green-600 bg-green-100 rounded-full p-4 inline-flex items-center justify-center shadow-lg gap-2"
+              >
                 <div className="text-green-600 bg-white rounded-full p-4 inline-flex items-center justify-center shadow">
                   {step.icon}
                   <h3 className="text-xl font-semibold ">{step.title}</h3>

@@ -69,7 +69,7 @@ const UpdateACC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-200 via-yellow-100 to-green-300 py-12 relative">
+    <div className="min-h-screen bg-gradient-to-br from-gray-500 via-gray-400 to-green-700 py-12 relative">
       <div className="container mx-auto px-4 relative z-10">
         <div className="bg-white/90 shadow-2xl rounded-3xl p-10 max-w-lg mx-auto border border-green-100">
           <div className="flex flex-col items-center mb-8">

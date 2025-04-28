@@ -20,6 +20,7 @@ import AddPayment from "./components/payment/dummyPayment";
 import RateFormSeller from "./components/rate&Review/RateFormSeller";
 import Test1 from "./components/deliverDetails/diliverdetails"
 import { useSelector } from "react-redux";
+import SellerDashboard from "./components/seller/Dashboard";
 
 import DeliveryDashboard from "./components/delivery/DeliveryDashboard";
 // import RealTimeTracking from "./components/delivery/RealTimeTracking";
@@ -48,6 +49,7 @@ const App = () => {
        {isLoggedIn && <Route path="/getProduct/:id" element={<Productinfo/>}/>}
        {isLoggedIn && <Route path="/cart" element={<Cart/>}/>}
        {isLoggedIn && <Route path="/getOrders" element={<OrderHistory/>}/>}
+        {isLoggedIn && <Route path="/seller/dashboard" element={<SellerDashboard/>}/>}
        {isLoggedIn && <Route path="/admin/viewOrders" element={<ViewOrders/>}/>}
        {isLoggedIn && <Route path="/addProduct" element={<AddProducts/>}/>}
        {isLoggedIn && <Route path="/updateProduct/:id" element={<UpdateProducts/>}/>}

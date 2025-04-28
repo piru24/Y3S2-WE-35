@@ -98,7 +98,7 @@ const Cart = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-200 via-yellow-100 to-green-300 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-gray-500 via-gray-400 to-green-700 py-12">
       <div className="container mx-auto px-4">
         <h1 className="text-4xl font-extrabold text-center text-green-800 mb-10 tracking-tight drop-shadow flex items-center justify-center gap-2">
           <MdFastfood className="text-yellow-500" /> Your Cart

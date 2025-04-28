@@ -114,7 +114,7 @@ const Profile = () => {
   };
 
   return (
-    <div className=" bg-gradient-to-br from-green-200 via-yellow-100 to-green-300 py-12 relative">
+    <div className=" bg-gradient-to-br from-gray-500 via-gray-400 to-green-700 py-12 relative">
       <div className="container mx-auto px-4 relative z-10">
         <div className="bg-white/90 shadow-2xl rounded-3xl p-10 max-w-2xl mx-auto border border-green-100">
           <div className="flex items-center gap-6 mb-8">
@@ -199,10 +199,10 @@ const Profile = () => {
                   <thead className="bg-green-100">
                     <tr>
                       <th className="px-4 py-2 text-left font-semibold text-green-800 uppercase">Name</th>
-                      <th className="px-4 py-2 text-left font-semibold text-green-800 uppercase">Brand</th>
+                      {/* <th className="px-4 py-2 text-left font-semibold text-green-800 uppercase">Brand</th> */}
                       <th className="px-4 py-2 text-left font-semibold text-green-800 uppercase">Price</th>
-                      <th className="px-4 py-2 text-left font-semibold text-green-800 uppercase">Description</th>
-                      <th className="px-4 py-2 text-left font-semibold text-green-800 uppercase">Weight</th>
+                      <th className="px-4 py-2 text-left font-semibold text-green-800 uppercase">Shop </th>
+                      <th className="px-4 py-2 text-left font-semibold text-green-800 uppercase">package</th>
                       <th className="px-4 py-2 text-left font-semibold text-green-800 uppercase">Actions</th>
                     </tr>
                   </thead>
@@ -210,10 +210,10 @@ const Profile = () => {
                     {products.map((product) => (
                       <tr key={product._id} className="hover:bg-green-50 transition">
                         <td className="px-4 py-2 text-gray-800">{product.name}</td>
-                        <td className="px-4 py-2 text-gray-800">{product.brand}</td>
+                        {/* <td className="px-4 py-2 text-gray-800">{product.brand}</td> */}
                         <td className="px-4 py-2 text-gray-800">Rs. {product.price}</td>
                         <td className="px-4 py-2 text-gray-800">{product.description}</td>
-                        <td className="px-4 py-2 text-gray-800">{product.weight}g</td>
+                        <td className="px-4 py-2 text-gray-800">for-{product.weight}-person</td>
                         <td className="px-4 py-2">
                           <div className="flex gap-2">
                             <button
@@ -255,7 +255,7 @@ const Profile = () => {
               <div className="text-center mt-4">
                 <button
                   className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-full shadow hover:scale-105 hover:from-blue-600 hover:to-blue-700 transition"
-                  onClick={() => navigate("/assignedDeliveries")}
+                  onClick={() => navigate("/deliveryDashboard")}
                 >
                   View Assigned Deliveries
                 </button>
