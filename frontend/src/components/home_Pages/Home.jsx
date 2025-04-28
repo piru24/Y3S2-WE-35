@@ -19,7 +19,7 @@ const staticProducts = [
     sellerName: "Pizza Palace",
     sellerAvailable: true,
     desc: "Classic tomato and mozzarella",
-    avgRating: 4.5,
+    avgRating: 4.5
   },
   {
     _id: 2,
@@ -30,7 +30,7 @@ const staticProducts = [
     sellerName: "Burger Barn",
     sellerAvailable: true,
     desc: "Juicy beef patty with cheese",
-    avgRating: 4.3,
+    avgRating: 4.3
   },
   {
     _id: 3,
@@ -40,10 +40,22 @@ const staticProducts = [
     image: "/images/thosa.jpg",
     sellerName: "Thosa Kada",
     sellerAvailable: true,
-    desc: "Juicy beef patty with cheese",
-    avgRating: 4.3,
+    desc: "Soft chapathi style thosa served hot",
+    avgRating: 4.3
   },
+  {
+    _id: 4,
+    name: "Chicken Biryani",
+    category: "biryani",
+    price: 14.99,
+    image: "/images/biryani.jpeg",
+    sellerName: "Biryani House",
+    sellerAvailable: true,
+    desc: "Spicy aromatic chicken biryani",
+    avgRating: 4.7
+  }
 ];
+
 
 const Home = () => {
   const { isLoggedIn } = useSelector((state) => state.auth);
@@ -176,7 +188,7 @@ const Home = () => {
             </button>
           ))}
         </div>
-        <div className="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
           {filteredProducts.map((product) => (
             <div
               key={product._id}

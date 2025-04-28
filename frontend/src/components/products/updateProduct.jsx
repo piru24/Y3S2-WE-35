@@ -87,15 +87,15 @@ export default function UpdateProducts() {
                 />
               </div>
               <div className="relative">
-                <label htmlFor="brand" className="block text-green-800 font-semibold mb-2">
+                <label htmlFor="description" className="block text-green-800 font-semibold mb-2">
                   Shop
                 </label>
                 <input
-                  name="brand"
+                  name="description"
                   type="text"
                   value={products.description}
                   required
-                  onChange={(val) => handleChangeText("brand", val)}
+                  onChange={(val) => handleChangeText("description", val)}
                   className="w-full pl-4 pr-4 py-3 border-2 border-green-100 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 bg-green-50"
                 />
               </div>
@@ -186,24 +186,6 @@ export default function UpdateProducts() {
                 )}
               </div>
             </div>
-
-            {/* Description
-            <div className="relative">
-              <label htmlFor="description" className="block text-green-800 font-semibold mb-2">
-                Description
-              </label>
-              <div className="flex items-center">
-                <MdDescription className="text-green-500 mr-2" />
-                <textarea
-                  name="description"
-                  value={products.description}
-                  required
-                  onChange={(val) => handleChangeText("description", val)}
-                  className="w-full pl-4 pr-4 py-3 border-2 border-green-100 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 bg-green-50"
-                  rows="4"
-                ></textarea>
-              </div>
-            </div> */}
 
             {/* Submit Button */}
             <button

@@ -38,8 +38,19 @@ const staticProducts = [
     image: "/images/thosa.jpg",
     sellerName: "Thosa Kada",
     sellerAvailable: true,
-    desc: "Juicy beef patty with cheese",
+    desc: "Soft chapathi style thosa served hot",
     avgRating: 4.3
+  },
+  {
+    _id: 4,
+    name: "Chicken Biryani",
+    category: "biryani",
+    price: 14.99,
+    image: "/images/biryani.jpeg",
+    sellerName: "Biryani House",
+    sellerAvailable: true,
+    desc: "Spicy aromatic chicken biryani",
+    avgRating: 4.7
   }
 ];
 

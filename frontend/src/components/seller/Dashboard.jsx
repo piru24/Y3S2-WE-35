@@ -36,34 +36,14 @@ const SellerDashboard = () => {
     fetchData();
   }, []);
 
-  const handleImageUpload = async (file) => {
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
     if (!file) return;
-
-    if (file.size > 32 * 1024 * 1024) {
-      Swal.fire("File too large", "Max 32MB allowed", "error");
-      return;
-    }
-
-    setIsUploading(true);
-    const formData = new FormData();
-    formData.append("image", file);
-
-    try {
-      const response = await axios.post(
-        "https://api.imgbb.com/1/upload?key=d5839940867e10e07b645f263a300bed",
-        formData
-      );
-
-      if (!response.data.success) {
-        throw new Error(response.data.error?.message || "Upload failed");
-      }
-      return response.data.data.url;
-    } catch (error) {
-      Swal.fire("Upload Failed", error.message, "error");
-      throw error;
-    } finally {
-      setIsUploading(false);
-    }
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setProducts({ ...products, image: reader.result });
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleDelete = async (productId) => {

@@ -199,7 +199,6 @@ const Profile = () => {
                   <thead className="bg-green-100">
                     <tr>
                       <th className="px-4 py-2 text-left font-semibold text-green-800 uppercase">Name</th>
-                      {/* <th className="px-4 py-2 text-left font-semibold text-green-800 uppercase">Brand</th> */}
                       <th className="px-4 py-2 text-left font-semibold text-green-800 uppercase">Price</th>
                       <th className="px-4 py-2 text-left font-semibold text-green-800 uppercase">Shop </th>
                       <th className="px-4 py-2 text-left font-semibold text-green-800 uppercase">package</th>
@@ -210,7 +209,6 @@ const Profile = () => {
                     {products.map((product) => (
                       <tr key={product._id} className="hover:bg-green-50 transition">
                         <td className="px-4 py-2 text-gray-800">{product.name}</td>
-                        {/* <td className="px-4 py-2 text-gray-800">{product.brand}</td> */}
                         <td className="px-4 py-2 text-gray-800">Rs. {product.price}</td>
                         <td className="px-4 py-2 text-gray-800">{product.description}</td>
                         <td className="px-4 py-2 text-gray-800">for-{product.weight}-person</td>

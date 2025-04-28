@@ -40,7 +40,7 @@ export default function AddProducts() {
           background: "#f0fdf4",
           confirmButtonColor: "#16a34a"
         });
-        navigate("/profile");
+        navigate("/seller/dashboard");
       })
       .catch((error) => {
         swal.fire({
@@ -149,21 +149,6 @@ export default function AddProducts() {
                 </div>
               </div>
             </div>
-
-            {/* Brand
-            <div>
-              <label htmlFor="brand" className="block text-green-800 font-semibold mb-2">
-                Brand
-              </label>
-              <input
-                name="brand"
-                type="text"
-                placeholder="Enter brand name"
-                required
-                onChange={handleChangeText}
-                className="w-full pl-4 pr-4 py-3 border-2 border-green-100 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 bg-green-50"
-              />
-            </div> */}
 
             {/* Description */}
             <div>
