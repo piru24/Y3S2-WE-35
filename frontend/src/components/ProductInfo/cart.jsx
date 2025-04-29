@@ -133,7 +133,7 @@ const Cart = () => {
                   </td>
                   <td className="px-6 py-4 text-lg text-green-900">{product.quantity}</td>
                   <td className="px-6 py-4 text-lg text-green-900">
-                    {product.quantity} x ₹{product.price}
+                    {product.quantity} x LKR {product.price}
                   </td>
                 </tr>
               ))}
@@ -178,7 +178,7 @@ const Cart = () => {
                   Fast Delivery
                 </span>
                 <span className="text-yellow-600 font-bold">
-                  ₹{fastDelivery} / {fastDeliveryTime} hrs
+                  LKR {fastDelivery} / {fastDeliveryTime} hrs
                 </span>
               </label>
               <label className="flex items-center gap-3 bg-white rounded-xl shadow px-6 py-4 cursor-pointer w-full md:w-auto">
@@ -195,7 +195,7 @@ const Cart = () => {
                   Cheap Delivery
                 </span>
                 <span className="text-yellow-600 font-bold">
-                  ₹{cheapDelivery} / {cheapDeliveryTime+2} hrs
+                LKR {cheapDelivery} / {cheapDeliveryTime+2} hrs
                 </span>
               </label>
             </div>
@@ -209,27 +209,27 @@ const Cart = () => {
           </h2>
           <div className="flex justify-between text-green-700 text-lg mb-2">
             <span>Cart Total:</span>
-            <span>₹{cart.total}</span>
+            <span>LKR {cart.total}</span>
           </div>
           <div className="flex justify-between text-green-700 text-lg mb-2">
             <span>With Commission:</span>
-            <span>₹{cart.withCommision}</span>
+            <span>LKR {cart.withCommision}</span>
           </div>
           <div className="flex justify-between text-green-700 text-lg mb-2">
             <span>Delivery Charges:</span>
-            <span>₹{deliveryCharge || 0}</span>
+            <span>LKR {deliveryCharge || 0}</span>
           </div>
           <div className="flex justify-between font-bold text-green-900 text-xl border-t border-green-200 pt-4 mt-4">
             <span>Total:</span>
-            <span>₹{finalTotal || cart.withCommision}</span>
+            <span>LKR {finalTotal || cart.withCommision}</span>
           </div>
         </div>
 
         {/* Checkout Buttons */}
         <div className="mt-10 flex flex-col md:flex-row gap-6 justify-center">
           <StripeCheckout
-            name="Engada Kada Shop"
-            description={`Your total is ₹${cart.total}`}
+            name="Pay Food @ Door "
+            description={`Your total is LKR${cart.total}`}
             amount={cart.total * 100}
             token={onToken}
             stripeKey={KEY}

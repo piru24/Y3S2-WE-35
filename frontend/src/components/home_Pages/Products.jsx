@@ -12,7 +12,7 @@ const staticProducts = [
     _id: 1,
     name: "Margherita Pizza",
     category: "pizza",
-    price: 12.99,
+    price: 1299.00,
     image: "/images/pizza.jpeg",
     description: "Pizza Palace",
     sellerAvailable: true,
@@ -23,7 +23,7 @@ const staticProducts = [
     _id: 2,
     name: "Cheese Burger",
     category: "burger",
-    price: 9.99,
+    price: 1900.99,
     image: "/images/burger.jpg",
     description: "Burger Barn",
     sellerAvailable: true,
@@ -34,7 +34,7 @@ const staticProducts = [
     _id: 3,
     name: "Chapathi Thosa",
     category: "thosa",
-    price: 9.99,
+    price: 100.99,
     image: "/images/thosa.jpg",
     description: "Thosa Kada",
     sellerAvailable: true,
@@ -45,7 +45,7 @@ const staticProducts = [
     _id: 4,
     name: "Chicken Biryani",
     category: "biryani",
-    price: 14.99,
+    price: 1399.99,
     image: "/images/biryani.jpeg",
     description: "Biryani House",
     sellerAvailable: true,
@@ -173,7 +173,7 @@ const Products = () => {
                   <MdAddShoppingCart size={22} />
                 </button>
                 <div className="absolute bottom-4 left-4 bg-white/90 px-3 py-1 rounded-full text-green-800 font-bold shadow text-sm">
-                  ₹{product.price}
+                  LKR{product.price}
                 </div>
               </div>
             </div>

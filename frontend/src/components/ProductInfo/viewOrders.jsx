@@ -92,7 +92,7 @@ const ViewOrders = () => {
 
                 {/* Amount */}
                 <div className="col-span-2 flex items-center gap-1 text-green-800 font-bold">
-                  <FaRupeeSign className="text-green-500" /> {order.amount}
+                 LKR {order.amount}
                 </div>
 
                 {/* Status */}

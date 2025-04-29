@@ -125,7 +125,7 @@ const DeliveryTracking = () => {
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
                   <FaRupeeSign className="text-green-500" />
-                  <p className="text-gray-700"><span className="font-semibold">Amount:</span> ₹{orderDetails.amount}</p>
+                  <p className="text-gray-700"><span className="font-semibold">Amount:</span> LKR {orderDetails.amount}</p>
                 </div>
                 
                 <div>
