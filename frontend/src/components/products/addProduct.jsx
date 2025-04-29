@@ -10,7 +10,6 @@ export default function AddProducts() {
   const navigate = useNavigate();
   const [products, setProducts] = useState({
     name: "",
-    brand: "",
     price: "",
     weight: "",
     upload_date: "",
@@ -156,7 +155,7 @@ export default function AddProducts() {
                 Shop
               </label>
               <input
-                name="brand"
+                name="description"
                 type="text"
                 placeholder="Enter Shop name"
                 required

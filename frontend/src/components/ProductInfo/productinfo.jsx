@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { addProduct } from "../Store";
 import { useDispatch } from "react-redux";
 import { FiStar, FiPackage, FiDollarSign, FiUser } from "react-icons/fi";
@@ -37,6 +37,7 @@ const Productinfo = () => {
 
   const handleAddtoCart = () => {
     dispatch(addProduct({ ...product, quantity }));
+    navigate("/cart");
   };
 
   return (
@@ -67,14 +68,14 @@ const Productinfo = () => {
               
               <div className="flex items-center gap-3 text-lg text-green-700">
                 <FiPackage className="text-2xl text-yellow-500" />
-                <span className="font-bold">Weight:</span>
-                <span className="bg-green-100 px-4 py-1 rounded-full">{product.weight}g</span>
+                <span className="font-bold">Portion:</span>
+                <span className="bg-green-100 px-4 py-1 rounded-full">for - {product.weight}</span>
               </div>
 
               <div className="flex items-center gap-3 text-lg text-green-700">
                 <FiUser className="text-2xl text-yellow-500" />
                 <span className="font-bold">Seller:</span>
-                <span className="bg-green-100 px-4 py-1 rounded-full">{product.sellerName}</span>
+                <span className="bg-green-100 px-4 py-1 rounded-full">{product.description}</span>
               </div>
             </div>
 
@@ -109,7 +110,6 @@ const Productinfo = () => {
               </div>
             </div>
 
-            {/* Add to Cart Button */}
             <button
               className="w-full bg-gradient-to-r from-green-600 to-green-700 text-white px-6 py-4 rounded-xl font-bold shadow hover:scale-[1.02] transition flex items-center justify-center gap-2 text-lg"
               onClick={handleAddtoCart}

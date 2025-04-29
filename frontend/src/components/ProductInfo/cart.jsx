@@ -195,7 +195,7 @@ const Cart = () => {
                   Cheap Delivery
                 </span>
                 <span className="text-yellow-600 font-bold">
-                  ₹{cheapDelivery} / {cheapDeliveryTime} days
+                  ₹{cheapDelivery} / {cheapDeliveryTime+2} hrs
                 </span>
               </label>
             </div>

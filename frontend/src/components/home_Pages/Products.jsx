@@ -14,7 +14,7 @@ const staticProducts = [
     category: "pizza",
     price: 12.99,
     image: "/images/pizza.jpeg",
-    sellerName: "Pizza Palace",
+    description: "Pizza Palace",
     sellerAvailable: true,
     desc: "Classic tomato and mozzarella",
     avgRating: 4.5
@@ -25,7 +25,7 @@ const staticProducts = [
     category: "burger",
     price: 9.99,
     image: "/images/burger.jpg",
-    sellerName: "Burger Barn",
+    description: "Burger Barn",
     sellerAvailable: true,
     desc: "Juicy beef patty with cheese",
     avgRating: 4.3
@@ -36,7 +36,7 @@ const staticProducts = [
     category: "thosa",
     price: 9.99,
     image: "/images/thosa.jpg",
-    sellerName: "Thosa Kada",
+    description: "Thosa Kada",
     sellerAvailable: true,
     desc: "Soft chapathi style thosa served hot",
     avgRating: 4.3
@@ -47,7 +47,7 @@ const staticProducts = [
     category: "biryani",
     price: 14.99,
     image: "/images/biryani.jpeg",
-    sellerName: "Biryani House",
+    description: "Biryani House",
     sellerAvailable: true,
     desc: "Spicy aromatic chicken biryani",
     avgRating: 4.7
@@ -139,7 +139,7 @@ const Products = () => {
                   </span>
                 </div>
                 <p className="text-gray-500 text-sm mb-4">
-                  <span className="font-semibold text-green-700">Restaurant:</span> {product.sellerName}
+                  <span className="font-semibold text-green-700">Restaurant:</span> {product.description}
                   <br />
                   <span
                     className={`font-semibold ${

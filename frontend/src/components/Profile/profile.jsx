@@ -10,12 +10,24 @@ axios.defaults.withCredentials = true;
 const Profile = () => {
   const [user, setUser] = useState({});
   const [products, setProducts] = useState([]);
+
+  const handleUpdate = (productId) => {
+    navigate(`/updateProduct/${productId}`);
+  };
+
+  const handleViewOrders = () => {
+    navigate("/viewOrders");
+  };
+
   const navigate = useNavigate();
 
   const sendRequest = async () => {
     const res = await axios
-      .get("http://localhost:8090/User/profile", { withCredentials: true })
+      .get("http://localhost:8090/User/profile", {
+        withCredentials: true,
+      })
       .catch((err) => console.log(err));
+
     const data = await res.data;
     return data;
   };
@@ -26,6 +38,7 @@ const Profile = () => {
         withCredentials: true,
       })
       .catch((err) => console.log(err));
+
     const data = await res.data;
     return data;
   };
@@ -33,9 +46,7 @@ const Profile = () => {
   useEffect(() => {
     sendRequest().then((data) => {
       setUser(data.user);
-      if (data.user.role === "seller") {
-        sendProductRequest(data.user._id).then((data) => setProducts(data));
-      }
+      sendProductRequest(data.user._id).then((data) => setProducts(data));
     });
   }, []);
 
@@ -109,10 +120,6 @@ const Profile = () => {
     });
   };
 
-  const handleViewOrders = () => {
-    navigate("/viewOrders");
-  };
-
   return (
     <div className=" bg-gradient-to-br from-gray-500 via-gray-400 to-green-700 py-12 relative">
       <div className="container mx-auto px-4 relative z-10">
@@ -180,7 +187,7 @@ const Profile = () => {
         </div>
 
         {/* Seller's Products */}
-        {user.role === "seller" && (
+        {/* {user.role === "seller" && (
           <div className="mt-16">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-2xl font-bold text-green-800 flex items-center gap-2">
@@ -192,6 +199,12 @@ const Profile = () => {
               >
                 <FaPlus /> Add Product
               </button>
+              <button
+          className="btn btn-danger btn-small-width float-end"
+          onClick={handleViewOrders}
+        >
+          View Orders
+        </button>
             </div>
             {products.length > 0 ? (
               <div className="overflow-x-auto bg-white/90 shadow-xl rounded-2xl border border-green-100">
@@ -216,7 +229,7 @@ const Profile = () => {
                           <div className="flex gap-2">
                             <button
                               className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-3 py-1 rounded-full shadow hover:scale-110 hover:from-blue-600 hover:to-blue-700 transition flex items-center gap-1"
-                              onClick={() => navigate(`/updateProduct/${product._id}`)}
+                               onClick={() => handleUpdate(product._id)}
                             >
                               <FaEdit /> Update
                             </button>
@@ -237,7 +250,7 @@ const Profile = () => {
               <p className="text-center text-gray-600 mt-4">No products available.</p>
             )}
           </div>
-        )}
+        )} */}
 
         {/* Delivery Profile */}
         {user.role === "delivery" && (

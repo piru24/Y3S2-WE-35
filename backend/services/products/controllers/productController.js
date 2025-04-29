@@ -1,36 +1,5 @@
 const Products = require("../model/products");
 const axios= require("axios")
-/*
-const getSellerName = async()=>{
-  try {
-    const response = await axios.get('http://localhost:8090/User/profile');
-    console.log(response)
-    return response.data.name;
-    
-  } catch (error) {
-    console.error(error);
-  }
-}
-*/
-/*
-
-// Get all products, including seller (restaurant) availability
-const getAllProducts = async (req, res, next) => {
-  try {
-    // Populate only the seller's name
-    const products = await Products.find().populate('sellerId', 'name');
-    // Flatten the result for frontend convenience
-    const productsWithSellerName = products.map(product => ({
-      ...product._doc,
-      sellerName: product.sellerId ? product.sellerId.name : "Unknown"
-    }));
-    return res.status(200).json(productsWithSellerName);
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json({ message: "Server error" });
-  }
-};
-*/
 
 //get all products
 const getAllProducts = async (req, res, next) => {
