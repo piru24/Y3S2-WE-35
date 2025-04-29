@@ -3,37 +3,32 @@ const jwt = require('jsonwebtoken');
 let decoded;
 let roleOne;
 
-const requireAuth = async (req, res, next) => {
-  try {
-    const cookie = req.headers.cookie;
+const requireAuth = (req, res, next) => {
+  const token = req.cookies.token;
 
-    if(!cookie){
-      return res.status(403).send("Please login or sign Up first");
+  if (!token) {
+    // Allow logout to proceed even if the token is missing
+    if (req.path === "/logout") {
+      return next();
     }
-    if (!cookie)
-      return res.status(403).send("Login requried!");
-
-
-   
-    const token = req.cookies.token;
-    if (!token)
-      return res.status(403).send("A token is required for authentication.");
-
-    decoded = jwt.verify(token, process.env.SECRET);
-    console.log("user Id  " + decoded._id)
-    req.userId = decoded._id;
-    roleOne = decoded.role;
-    console.log(roleOne)
-    console.log("req.userId  " + req.userId)
-
-    next();
-
-  } catch (err) {
-    console.error(err);
-    return res.status(401).send(new Error('Invalid token'));
+    return res.status(401).json({ message: "Authentication required. Please log in." });
   }
 
-}
+  jwt.verify(token, process.env.SECRET, (err, decodedToken) => {
+    if (err) {
+      console.error("Token verification failed:", err);
+      // Allow logout to proceed even if the token is invalid
+      if (req.path === "/logout") {
+        return next();
+      }
+      return res.status(403).json({ message: "Invalid or expired token. Please log in again." });
+    }
+
+    req.userId = decodedToken._id;
+    req.userRole = decodedToken.role;
+    next();
+  });
+};
 
 
 const requireRoleSeller = async (req, res, next) => {

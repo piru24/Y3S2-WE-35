@@ -2,134 +2,212 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert2";
 import axios from "axios";
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container';
-import '../../assets/images/AddProducts.css';
+import { MdFastfood, MdAddPhotoAlternate } from "react-icons/md";
+import { FaRegCalendarAlt, FaRupeeSign, FaWeight } from "react-icons/fa";
 
 export default function AddProducts() {
-
+  const [isUploading, setIsUploading] = useState(false);
+  const navigate = useNavigate();
   const [products, setProducts] = useState({
-        name: "", 
-        brand: "",
-        price: "",
-        weight: "",
-        upload_date: "",
-        description: "",
-        image: "",
+    name: "",
+    brand: "",
+    price: "",
+    weight: "",
+    upload_date: "",
+    description: "",
+    image: "",
   });
 
-  const handleChangeText = (name, value) => {
-    setProducts({ ...products, [name]: value.target.value });
+  // Unified handler for all text/number/date fields
+  const handleChangeText = (e) => {
+    const { name, value } = e.target;
+    setProducts({ ...products, [name]: value });
+  };
+
+  // For select (portion/weight), ensure number
+  const handleWeightChange = (e) => {
+    setProducts({ ...products, weight: Number(e.target.value) });
   };
 
   const addProducts = (e) => {
     e.preventDefault();
-    console.log("submit");
     axios
-      .post("http://localhost:8070/products/addProduct", products)
+      .post("http://localhost:8070/products/addProduct", products, { withCredentials: true })
       .then(() => {
-        swal.fire(`successfully added`);
-        navigate("/");
+        swal.fire({
+          title: "Product added successfully!",
+          icon: "success",
+          background: "#f0fdf4",
+          confirmButtonColor: "#16a34a"
+        });
+        navigate("/seller/dashboard");
       })
       .catch((error) => {
-        console.log(error);
+        swal.fire({
+          title: "Error!",
+          text: error.response?.data?.message || "Failed to add product.",
+          icon: "error",
+          background: "#fef2f2",
+          confirmButtonColor: "#dc2626"
+        });
       });
   };
-  const navigate = useNavigate();
-  return (
-    
-    <Container fluid>
-       <h1 className="mb-4">Add Products</h1>
-      <Form onSubmit={addProducts}>
-        
-        <Row className="mb-3">
-          <Form.Group as={Col}  controlId="formBasicName">
-            <Form.Label>Name</Form.Label>
-            <Form.Control 
-                name="name"
-                type="text" 
-                placeholder="Username"   
-                title="Name must be required"
-                required
-                onChange={(val) => handleChangeText("name", val)}/>
-            
-          </Form.Group>
-          <Form.Group as={Col} controlId="formBasicBrand">
-            <Form.Label>Brand</Form.Label>
-            <Form.Control 
-                name="brand"
-                type="text" 
-                placeholder="Brand"   
-                title="Brand must be required"
-                required
-                onChange={(val) => handleChangeText("brand", val)}/>
-          </Form.Group>
-        </Row> 
-        <Row className="mb-3">
-          <Form.Group as={Col}  controlId="formBasicPrice">
-            <Form.Label>Price</Form.Label>
-            <Form.Control 
-                name="price"
-                type="text" 
-                placeholder="Price"   
-                title="Price must be required"
-                required
-                onChange={(val) => handleChangeText("price", val)}/>
-            
-          </Form.Group>
-          <Form.Group as={Col} controlId="formBasicWeight">
-            <Form.Label>Weight</Form.Label>
-            <Form.Control 
-                name="weight"
-                type="text" 
-                placeholder="weight"   
-                title="Weight must be required"
-                required
-                onChange={(val) => handleChangeText("weight", val)}/>
-          </Form.Group>
-        </Row> 
-        <Row className="mb-3">
-          <Form.Group as={Col}  controlId="formBasicUpload_date">
-            <Form.Label>Upload Date</Form.Label>
-            <Form.Control 
-                name="upload_date"
-                type="date" 
-                placeholder="Upload Date"   
-                title="Upload Date must be required"
-                required
-                onChange={(val) => handleChangeText("upload_date", val)}/>
-            
-          </Form.Group>
-          <Form.Group as={Col} controlId="formBasicaImage">
-            <Form.Label>Image</Form.Label>
-            <Form.Control 
-                name="image"
-                type="text" 
-                placeholder="Image"   
-                title="Image must be required"
-                required
-                onChange={(val) => handleChangeText("image", val)}/>
-          </Form.Group>
-        </Row> 
-        <Form.Group className="mb-3" controlId="formGroupEmail">
-        <Form.Label>Description</Form.Label>
-            <Form.Control 
-                name="description"
-                type="text" 
-                placeholder="Description"   
-                title="Description must be required"
-                required
-                onChange={(val) => handleChangeText("description", val)}/>
-      </Form.Group>  
 
-          <Button variant="primary" type="submit">
-            Submit
-          </Button>
-         
-        </Form>
-        </Container>
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setIsUploading(true);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setProducts({ ...products, image: reader.result });
+      setIsUploading(false);
+    };
+    reader.readAsDataURL(file);
+  };
+  
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-500 via-gray-400 to-green-700 py-12 flex items-center">
+      <div className="container mx-auto px-4">
+        <div className="bg-white/90 shadow-2xl rounded-3xl p-10 max-w-2xl mx-auto border border-green-100">
+          <div className="flex items-center justify-center gap-3 mb-8">
+            <MdFastfood className="text-4xl text-yellow-500" />
+            <h1 className="text-3xl font-extrabold text-green-800">
+              Add New Product
+            </h1>
+          </div>
+          <form onSubmit={addProducts} className="space-y-8">
+            {/* Name and Portion */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="relative">
+                <label htmlFor="name" className="block text-green-800 font-semibold mb-2">
+                  Name
+                </label>
+                <input
+                  name="name"
+                  type="text"
+                  placeholder="Enter product name"
+                  required
+                  onChange={handleChangeText}
+                  className="w-full pl-4 pr-4 py-3 border-2 border-green-100 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 bg-green-50"
+                />
+              </div>
+              <div className="relative">
+                <label htmlFor="weight" className="block text-green-800 font-semibold mb-2">
+                  Portion
+                </label>
+                <div className="flex items-center">
+                  <FaWeight className="text-green-500 mr-2" />
+                  <select
+                    name="weight"
+                    required
+                    value={products.weight}
+                    onChange={handleWeightChange}
+                    className="w-full pl-4 pr-4 py-3 border-2 border-green-100 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 bg-green-50"
+                  >
+                    <option value="" disabled>
+                      Select
+                    </option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* Price and Upload Date */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="relative">
+                <label htmlFor="price" className="block text-green-800 font-semibold mb-2">
+                  Price (Rs.)
+                </label>
+                <div className="flex items-center">
+                  <FaRupeeSign className="text-green-500 mr-2" />
+                  <input
+                    name="price"
+                    type="number"
+                    placeholder="Enter price"
+                    required
+                    onChange={handleChangeText}
+                    className="w-full pl-4 pr-4 py-3 border-2 border-green-100 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 bg-green-50"
+                  />
+                </div>
+              </div>
+              <div className="relative">
+                <label htmlFor="upload_date" className="block text-green-800 font-semibold mb-2">
+                  Upload Date
+                </label>
+                <div className="flex items-center">
+                  <FaRegCalendarAlt className="text-green-500 mr-2" />
+                  <input
+                    name="upload_date"
+                    type="date"
+                    required
+                    onChange={handleChangeText}
+                    className="w-full pl-4 pr-4 py-3 border-2 border-green-100 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 bg-green-50"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Description */}
+            <div>
+              <label htmlFor="description" className="block text-green-800 font-semibold mb-2">
+                Shop
+              </label>
+              <input
+                name="brand"
+                type="text"
+                placeholder="Enter Shop name"
+                required
+                onChange={handleChangeText}
+                className="w-full pl-4 pr-4 py-3 border-2 border-green-100 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 bg-green-50"
+              />
+            </div>
+
+            {/* Image Upload */}
+            <div className="relative">
+              <label htmlFor="image" className="block text-green-800 font-semibold mb-2">
+                Product Image
+              </label>
+              <div className="flex items-center">
+                <MdAddPhotoAlternate className="text-green-500 mr-2" />
+                <input
+                  type="file"
+                  onChange={handleImageUpload}
+                  className="w-full pl-4 pr-4 py-3 border-2 border-green-100 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 bg-green-50"
+                  accept="image/*"
+                  required
+                  disabled={isUploading}
+                />
+              </div>
+              {isUploading && (
+                <p className="text-green-600 text-sm mt-2">Uploading image...</p>
+              )}
+              {products.image && (
+                <div className="mt-4">
+                  <p className="text-green-700 text-sm mb-2">Uploaded Image:</p>
+                  <img
+                    src={products.image}
+                    alt="Preview"
+                    className="h-32 w-32 object-cover rounded-lg shadow"
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              className="w-full bg-gradient-to-r from-green-600 to-green-700 text-white py-4 px-6 rounded-xl font-bold shadow-lg hover:shadow-xl hover:from-green-700 hover:to-green-800 transition-all duration-300 flex items-center justify-center gap-2 text-lg"
+              disabled={isUploading}
+            >
+              <MdFastfood className="text-2xl" />
+              Add Product
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
   );
 }

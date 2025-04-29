@@ -20,10 +20,13 @@ import AddPayment from "./components/payment/dummyPayment";
 import RateFormSeller from "./components/rate&Review/RateFormSeller";
 import Test1 from "./components/deliverDetails/diliverdetails"
 import { useSelector } from "react-redux";
+import SellerDashboard from "./components/seller/Dashboard";
 
 import DeliveryDashboard from "./components/delivery/DeliveryDashboard";
 // import RealTimeTracking from "./components/delivery/RealTimeTracking";
 import Notify from "./components/notify/notify";
+import Home from "./components/home_Pages/Home";
+import Footer from "./components/footer";
 
 const App = () => {
 
@@ -34,6 +37,7 @@ const App = () => {
     <BrowserRouter>
     <Header/>
       <Routes>
+      <Route path="/" element={<Home/>}/>
         <Route path="/signUp" element={<Register/>}/>
         <Route path="/login" element={<Login/>}/>
 
@@ -45,6 +49,7 @@ const App = () => {
        {isLoggedIn && <Route path="/getProduct/:id" element={<Productinfo/>}/>}
        {isLoggedIn && <Route path="/cart" element={<Cart/>}/>}
        {isLoggedIn && <Route path="/getOrders" element={<OrderHistory/>}/>}
+        {isLoggedIn && <Route path="/seller/dashboard" element={<SellerDashboard/>}/>}
        {isLoggedIn && <Route path="/admin/viewOrders" element={<ViewOrders/>}/>}
        {isLoggedIn && <Route path="/addProduct" element={<AddProducts/>}/>}
        {isLoggedIn && <Route path="/updateProduct/:id" element={<UpdateProducts/>}/>}
@@ -58,9 +63,9 @@ const App = () => {
        {/* {isLoggedIn && <Route path="/track/:orderId" element={<RealTimeTracking />}/>} */}
        {isLoggedIn && <Route path="/notify/:orderId" element={<Notify />}/>}
 
-       <Route path="*" element={<h1>Page Not Found</h1>}/>
+       
       </Routes>
-      
+      <Footer/>
     </BrowserRouter>
   );
 }

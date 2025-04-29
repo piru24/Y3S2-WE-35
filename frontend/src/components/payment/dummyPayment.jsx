@@ -1,166 +1,194 @@
 import React, { useState } from "react";
-import { useNavigate} from "react-router-dom";
-import { useSelector } from 'react-redux'
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import swal from "sweetalert2";
 import axios from "axios";
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container';
-//import '../../assets/images/AddProducts.css';
+import { FaCreditCard, FaUser, FaEnvelope, FaMobileAlt, FaLock } from "react-icons/fa";
 
 export default function AddPayment() {
-
-  const cart = useSelector((state) => state.cart)
-  const [payments, setPayemtns] = useState({
-        email: "", 
-        mobile: "",
-        number: "",
-        expiration: "",
-        cvv: "",
-        name: "",
-        amount:"",
+  const cart = useSelector((state) => state.cart);
+  const [payments, setPayments] = useState({
+    email: "",
+    mobile: "",
+    number: "",
+    expiration: "",
+    cvv: "",
+    name: "",
+    amount: "",
   });
 
   const handleChangeText = (name, value) => {
-    setPayemtns({ ...payments, [name]: value.target.value });
-    console.log(payments);
+    setPayments({ ...payments, [name]: value.target.value });
   };
 
-const newPayment = {
-  email:payments.email,
-  mobile:payments.mobile,
-  card:{
-    number:payments.number,
-    expiration:payments.expiration,
-    cvv:payments.cvv,
-    name:payments.name
-  },
-  amount:payments.amount
+  const newPayment = {
+    email: payments.email,
+    mobile: payments.mobile,
+    card: {
+      number: payments.number,
+      expiration: payments.expiration,
+      cvv: payments.cvv,
+      name: payments.name,
+    },
+    amount: payments.amount,
+  };
 
-}
+  const AddPayment = async (e) => {
+    e.preventDefault();
+    try {
+      const paymentRes = await axios.post(
+        "http://localhost:8500/payment/card",
+        newPayment,
+        { withCredentials: true }
+      );
+      swal.fire({
+        title: 'Payment Successful!',
+        icon: 'success',
+        background: '#f0fdf4',
+        confirmButtonColor: '#16a34a'
+      });
 
+      const orderData = {
+        products: cart.products.map((product) => ({
+          productId: product._id,
+          name: product.name,
+          quantity: product.quantity,
+        })),
+        amount: cart.withCommision,
+        status: "pending",
+      };
+      const orderRes = await axios.post(
+        "http://localhost:8020/Order/addOrder",
+        orderData,
+        { withCredentials: true }
+      );
 
-
-const AddPayment = async (e) => {
-  e.preventDefault();
-  try {
-    // 1. Make dummy payment
-    const paymentRes = await axios.post("http://localhost:8500/payment/card", newPayment, { withCredentials: true });
-    swal.fire(`Payment Successful`);
-
-    // 2. Now create the order (just like Stripe flow)
-    const orderData = {
-      products: cart.products.map((product) => ({
-        productId: product._id,
-        name: product.name,
-        quantity: product.quantity,
-      })),
-      amount: cart.withCommision,
-      status: "pending",
-    };
-    const orderRes = await axios.post("http://localhost:8020/Order/addOrder", orderData, { withCredentials: true });
-
-    // 3. Navigate to order history or show success
-    navigate("/getOrders");
-  } catch (error) {
-    console.error(error);
-    swal.fire(`Payment or Order Failed`);
-  }
-};
+      navigate("/getOrders");
+    } catch (error) {
+      console.error(error);
+      swal.fire({
+        title: 'Payment Failed',
+        text: 'Please check your details and try again',
+        icon: 'error',
+        background: '#fef2f2',
+        confirmButtonColor: '#dc2626'
+      });
+    }
+  };
 
   const navigate = useNavigate();
   return (
-    
-    <Container fluid>
-       <h1 className="mb-4">Payment</h1>
-      <Form onSubmit={AddPayment}>
+    <div className="bg-gradient-to-br from-gray-500 via-gray-400 to-green-700 p-8 flex items-center justify-center">
+      <div className="bg-white/90 backdrop-blur-lg shadow-2xl rounded-2xl p-8 w-full max-w-lg border border-green-100">
+        <div className="flex items-center justify-center gap-3 mb-8">
+          <FaCreditCard className="text-3xl text-green-600" />
+          <h1 className="text-3xl font-bold text-center text-green-800">
+            Secure Payment
+          </h1>
+        </div>
         
-        <Row className="mb-3">
-          <Form.Group as={Col}  controlId="formBasicEmail">
-            <Form.Label>Email</Form.Label>
-            <Form.Control 
+        <form onSubmit={AddPayment} className="space-y-6">
+          {/* Email and Mobile */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="relative">
+              <FaEnvelope className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-500" />
+              <input
                 name="email"
-                type="email" 
-                placeholder="Email"   
-                title="Email must be required"
+                type="email"
+                placeholder="Email"
                 required
-                onChange={(val) => handleChangeText("email", val)}/>
-            
-          </Form.Group>
-          <Form.Group as={Col} controlId="formBasicMobile">
-            <Form.Label>Mobile</Form.Label>
-            <Form.Control 
+                onChange={(val) => handleChangeText("email", val)}
+                className="w-full pl-10 pr-4 py-3 border-2 border-green-100 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 bg-green-50"
+              />
+            </div>
+            <div className="relative">
+              <FaMobileAlt className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-500" />
+              <input
                 name="mobile"
-                type="number" 
-                placeholder="Mobile"   
-                title="Mobile must be required"
+                type="number"
+                placeholder="Mobile"
                 required
-                onChange={(val) => handleChangeText("mobile", val)}/>
-          </Form.Group>
-        </Row> 
-        <Row className="mb-3">
-          <Form.Group as={Col}  controlId="formBasicNumber">
-            <Form.Label>Credit Card Number</Form.Label>
-            <Form.Control 
-                name="number"
-                type="text" 
-                placeholder="xxxx xxxx xxxx xxxx"   
-                title="Number must be required"
-                required
-                onChange={(val) => handleChangeText("number", val)}/>
-            
-          </Form.Group>
-          <Form.Group as={Col} controlId="formBasicExpiration">
-            <Form.Label>Expire In</Form.Label>
-            <Form.Control 
-                name="expiration"
-                type="text" 
-                placeholder="eg:01/25(mm/yy)"   
-                title="expiration must be required"
-                required
-                onChange={(val) => handleChangeText("expiration", val)}/>
-          </Form.Group>
-        </Row> 
-        <Row className="mb-3">
-          <Form.Group as={Col}  controlId="formBasicCCV">
-            <Form.Label>CVV</Form.Label>
-            <Form.Control 
-                name="cvv"
-                type="number" 
-                placeholder="CVV"   
-                title="Upload Date must be required"
-                required
-                onChange={(val) => handleChangeText("cvv", val)}/>
-            
-          </Form.Group>
-          <Form.Group as={Col} controlId="formBasicaName">
-            <Form.Label>Name</Form.Label>
-            <Form.Control 
-                name="name"
-                type="text" 
-                placeholder="Name"   
-                title="Name must be required"
-                required
-                onChange={(val) => handleChangeText("name", val)}/>
-          </Form.Group>
-        </Row> 
-        <Form.Group className="mb-3" controlId="formGroupAmount">
-        <Form.Label>Amount (Rs. )</Form.Label>
-            <Form.Control 
-                name="amount"
-                type="number" 
-                placeholder="Amount"   
-                title="Amount must be required"
-                onChange={(val) => handleChangeText("amount", val)}/>
-      </Form.Group>  
+                onChange={(val) => handleChangeText("mobile", val)}
+                className="w-full pl-10 pr-4 py-3 border-2 border-green-100 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 bg-green-50"
+              />
+            </div>
+          </div>
 
-          <Button variant="primary" type="submit">
-            Submit
-          </Button>
-         
-        </Form>
-        </Container>
+          {/* Credit Card Details */}
+          <div className="space-y-4">
+            <div className="relative">
+              <FaCreditCard className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-500" />
+              <input
+                name="number"
+                type="text"
+                placeholder="Card Number"
+                required
+                onChange={(val) => handleChangeText("number", val)}
+                className="w-full pl-10 pr-4 py-3 border-2 border-green-100 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 bg-green-50"
+              />
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <div className="relative">
+                <input
+                  name="expiration"
+                  type="text"
+                  placeholder="MM/YY"
+                  required
+                  onChange={(val) => handleChangeText("expiration", val)}
+                  className="w-full px-4 py-3 border-2 border-green-100 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 bg-green-50"
+                />
+              </div>
+              <div className="relative">
+                <FaLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-500" />
+                <input
+                  name="cvv"
+                  type="number"
+                  placeholder="CVV"
+                  required
+                  onChange={(val) => handleChangeText("cvv", val)}
+                  className="w-full pl-10 pr-4 py-3 border-2 border-green-100 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 bg-green-50"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Name and Amount */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="relative">
+              <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-500" />
+              <input
+                name="name"
+                type="text"
+                placeholder="Cardholder Name"
+                required
+                onChange={(val) => handleChangeText("name", val)}
+                className="w-full pl-10 pr-4 py-3 border-2 border-green-100 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 bg-green-50"
+              />
+            </div>
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-500 font-bold">₹</span>
+              <input
+                name="amount"
+                type="number"
+                placeholder="Amount"
+                required
+                onChange={(val) => handleChangeText("amount", val)}
+                className="w-full pl-10 pr-4 py-3 border-2 border-green-100 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 bg-green-50"
+              />
+            </div>
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full bg-gradient-to-r from-green-600 to-green-700 text-white py-4 px-6 rounded-xl font-bold shadow-lg hover:shadow-xl hover:from-green-700 hover:to-green-800 transition-all duration-300 flex items-center justify-center gap-2"
+          >
+            <FaCreditCard className="text-xl" />
+            Confirm Payment
+          </button>
+        </form>
+      </div>
+    </div>
   );
 }
