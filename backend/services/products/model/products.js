@@ -4,33 +4,38 @@ const Schema = mongoose.Schema;
 const productSchema = new Schema({
   name: {
     type: String,
-     required: true
+    required: true,
   },
   price: {
     type: Number,
-    require: true
+    require: true,
   },
   weight: {
     type: Number,
-    require: true
+    require: true,
   },
   upload_date: {
     type: Date,
-    required: true
+    required: true,
   },
   description: {
     type: String,
-    required: true
+    required: true,
   },
   image: {
     type: String,
-    required: true
+    required: true,
   },
   sellerId: {
     type: Schema.Types.ObjectId,
-    ref: 'user', // or 'Seller' if you have a separate seller model
-    required: true
-  }
+    ref: "user", // or 'Seller' if you have a separate seller model
+    required: true,
+  },
+  sellerId: {
+    type: Schema.Types.ObjectId,
+    ref: "user", // or 'Seller' if you have a separate seller model
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("Products", productSchema);

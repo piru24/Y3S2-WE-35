@@ -9,8 +9,7 @@ export default function UpdateProducts() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [products, setProducts] = useState({
-    name: "",
-    brand: "",
+    name: "", 
     price: "",
     weight: "",
     upload_date: "",
@@ -19,13 +18,12 @@ export default function UpdateProducts() {
   });
 
   useEffect(() => {
-    const getProductById = async () => {
-      try {
-        const res = await axios.get(`http://localhost:8070/products/getProduct/${id}`);
-        setProducts(res.data.product);
-      } catch (err) {
-        console.error(err);
-      }
+    const getProductById = () => {
+      axios
+        .get(`http://localhost:8070/products/getProduct/${id}`)
+        .then((res) => {
+          setProducts(res.data.product);
+        });
     };
     getProductById();
   }, [id]);
@@ -33,30 +31,19 @@ export default function UpdateProducts() {
   const handleChangeText = (name, val) => {
     setProducts({ ...products, [name]: val.target.value });
   };
-  
 
-  const UpdateProductsHandler = async (e) => {
+  const UpdateProductsHandler = (e) => {
     e.preventDefault();
-    try {
-      await axios.put(`http://localhost:8070/products/updateProduct/${id}`, products);
-      swal.fire({
-        title: "Product Updated!",
-        text: "Your product has been successfully updated",
-        icon: "success",
-        background: "#f0fdf4",
-        confirmButtonColor: "#16a34a"
+    axios
+      .put(`http://localhost:8070/products/updateProduct/${id}`, products)
+      .then(() => {
+        swal.fire(`Successfully updated`);
+        navigate("/profile");
+      })
+      .catch((error) => {
+        swal.fire("Update failed", error.response?.data?.message || "", "error");
+        console.log(error);
       });
-      navigate("/profile");
-    } catch (error) {
-      swal.fire({
-        title: "Update Failed",
-        text: error.response?.data?.message || "Please try again",
-        icon: "error",
-        background: "#fef2f2",
-        confirmButtonColor: "#dc2626"
-      });
-      console.error(error);
-    }
   };
 
   return (
