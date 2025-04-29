@@ -242,7 +242,7 @@ const SellerDashboard = () => {
                 </div>
 
                 <div className="col-span-1 flex items-center gap-1">
-                  <FaRupeeSign className="text-green-500" />
+                  LKR
                   <span className="font-bold">{product.price}</span>
                 </div>
 

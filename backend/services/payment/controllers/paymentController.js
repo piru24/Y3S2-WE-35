@@ -121,12 +121,12 @@ const dummyCardPayment = async (req, res, next) => {
     const emaildata = {
       "to": email,
       "subject": "Payment Received",
-      "message": `Your Transaction of Rs.${amount} to Ayu is complete`
+      "message": `Your Transaction of Rs.${amount} to Food@Door is complete`
     };
 
     const smsData = {
-      to: "94763309823",
-      text: `Your Payment of Rs.${amount} was received by Ayu`
+      to: "94762346497",
+      text: `Your Payment of Rs.${amount} was received by Food@door`
     }
     
     const emailResult = await axios.post("http://localhost:8100/email/sendMail", emaildata, config);

@@ -101,7 +101,7 @@ const DeliveryDashboard = () => {
 
                     {/* Amount */}
                     <div className="flex items-center gap-2">
-                      <FaRupeeSign className="text-green-500" />
+                      LKR
                       <span className="text-green-800 font-bold">
                         {order.amount?.toFixed(2) || '0.00'}
                       </span>
